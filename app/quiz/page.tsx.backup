@@ -1,0 +1,1159 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import styles from "./quiz.module.css";
+
+export default function QuizPage() {
+    const router = useRouter();
+    const [locale, setLocale] = useState<"pt-BR" | "en">("pt-BR");
+    const [currentStep, setCurrentStep] = useState(1);
+    const [loading, setLoading] = useState(false);
+
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        age: "",
+        weight: "",
+        height: "",
+        gender: "other" as "male" | "female" | "other",
+        goals: [] as string[],
+        restrictions: [] as string[],
+        style: "",
+        activityLevel: "",
+        mealsPerDay: "4",
+        budget: "medium" as "low" | "medium" | "high",
+        cookingSkill: "intermediate" as "beginner" | "intermediate" | "advanced",
+    });
+
+    // Detectar idioma do navegador
+    useEffect(() => {
+        const browserLang = navigator.language;
+        if (browserLang.startsWith("pt")) {
+            setLocale("pt-BR");
+        } else {
+            setLocale("en");
+        }
+    }, []);
+
+    const t = translations[locale];
+
+    // Total de etapas
+    const totalSteps = 10;
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+
+        try {
+            const intake = {
+                ...formData,
+                age: parseInt(formData.age),
+                weight: parseFloat(formData.weight),
+                height: parseFloat(formData.height),
+                mealsPerDay: parseInt(formData.mealsPerDay),
+                locale,
+            };
+
+            localStorage.setItem("intake", JSON.stringify(intake));
+
+            const response = await fetch("/api/preview", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(intake),
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to generate preview");
+            }
+
+            const preview = await response.json();
+            localStorage.setItem("preview", JSON.stringify(preview));
+
+            router.push("/preview");
+        } catch (error) {
+            console.error("Error:", error);
+            alert(t.error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const updateField = (field: string, value: any) => {
+        setFormData((prev) => ({ ...prev, [field]: value }));
+    };
+
+    const nextStep = () => {
+        setCurrentStep((s) => Math.min(s + 1, totalSteps));
+    };
+
+    const prevStep = () => {
+        setCurrentStep((s) => Math.max(s - 1, 1));
+    };
+
+    const canProceed = () => {
+        switch (currentStep) {
+            case 1:
+                return formData.name.trim() !== "";
+            case 2:
+                return formData.email.trim() !== "";
+            case 3:
+                return formData.age !== "" && parseInt(formData.age) >= 10;
+            case 4:
+                return formData.weight !== "" && parseFloat(formData.weight) > 0;
+            case 5:
+                return formData.height !== "" && parseFloat(formData.height) > 0;
+            case 6:
+                return formData.goals.length > 0;
+            case 7:
+                return formData.style !== "";
+            case 8:
+                return formData.activityLevel !== "";
+            case 9:
+                return true; // Restrições são opcionais
+            case 10:
+                return true; // Budget e skill têm valores padrão
+            default:
+                return false;
+        }
+    };
+
+    const renderStep = () => {
+        switch (currentStep) {
+            case 1:
+                return (
+                    <div className="step-content">
+                        <h2>{t.steps.name.title}</h2>
+                        <p className="step-description">{t.steps.name.description}</p>
+                        <input
+                            type="text"
+                            value={formData.name}
+                            onChange={(e) => updateField("name", e.target.value)}
+                            placeholder={t.steps.name.placeholder}
+                            autoFocus
+                            className="input-large"
+                        />
+                    </div>
+                );
+
+            case 2:
+                return (
+                    <div className="step-content">
+                        <h2>{t.steps.email.title}</h2>
+                        <p className="step-description">{t.steps.email.description}</p>
+                        <input
+                            type="email"
+                            value={formData.email}
+                            onChange={(e) => updateField("email", e.target.value)}
+                            placeholder={t.steps.email.placeholder}
+                            autoFocus
+                            className="input-large"
+                        />
+                    </div>
+                );
+
+            case 3:
+                return (
+                    <div className="step-content">
+                        <h2>{t.steps.age.title}</h2>
+                        <p className="step-description">{t.steps.age.description}</p>
+                        <div className="input-row">
+                            <input
+                                type="number"
+                                value={formData.age}
+                                onChange={(e) => updateField("age", e.target.value)}
+                                placeholder="25"
+                                min="10"
+                                max="100"
+                                autoFocus
+                                className="input-large"
+                            />
+                            <select
+                                value={formData.gender}
+                                onChange={(e) => updateField("gender", e.target.value)}
+                                className="input-large"
+                            >
+                                <option value="male">{t.steps.age.male}</option>
+                                <option value="female">{t.steps.age.female}</option>
+                                <option value="other">{t.steps.age.other}</option>
+                            </select>
+                        </div>
+                    </div>
+                );
+
+            case 4:
+                return (
+                    <div className="step-content">
+                        <h2>{t.steps.weight.title}</h2>
+                        <p className="step-description">{t.steps.weight.description}</p>
+                        <div className="input-with-unit">
+                            <input
+                                type="number"
+                                value={formData.weight}
+                                onChange={(e) => updateField("weight", e.target.value)}
+                                placeholder="70"
+                                min="30"
+                                max="300"
+                                step="0.1"
+                                autoFocus
+                                className="input-large"
+                            />
+                            <span className="unit">kg</span>
+                        </div>
+                    </div>
+                );
+
+            case 5:
+                return (
+                    <div className="step-content">
+                        <h2>{t.steps.height.title}</h2>
+                        <p className="step-description">{t.steps.height.description}</p>
+                        <div className="input-with-unit">
+                            <input
+                                type="number"
+                                value={formData.height}
+                                onChange={(e) => updateField("height", e.target.value)}
+                                placeholder="170"
+                                min="100"
+                                max="250"
+                                autoFocus
+                                className="input-large"
+                            />
+                            <span className="unit">cm</span>
+                        </div>
+                    </div>
+                );
+
+            case 6:
+                return (
+                    <div className="step-content">
+                        <h2>{t.steps.goals.title}</h2>
+                        <p className="step-description">{t.steps.goals.description}</p>
+                        <div className="options-grid">
+                            {t.steps.goals.options.map((option) => (
+                                <button
+                                    key={option.value}
+                                    type="button"
+                                    className={`option-card ${formData.goals.includes(option.value) ? "selected" : ""
+                                        }`}
+                                    onClick={() => {
+                                        if (formData.goals.includes(option.value)) {
+                                            updateField(
+                                                "goals",
+                                                formData.goals.filter((g) => g !== option.value)
+                                            );
+                                        } else {
+                                            updateField("goals", [...formData.goals, option.value]);
+                                        }
+                                    }}
+                                >
+                                    <span className="option-icon">{option.icon}</span>
+                                    <span className="option-label">{option.label}</span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                );
+
+            case 7:
+                return (
+                    <div className="step-content">
+                        <h2>{t.steps.style.title}</h2>
+                        <p className="step-description">{t.steps.style.description}</p>
+                        <div className="options-grid">
+                            {t.steps.style.options.map((option) => (
+                                <button
+                                    key={option.value}
+                                    type="button"
+                                    className={`option-card ${formData.style === option.value ? "selected" : ""
+                                        }`}
+                                    onClick={() => updateField("style", option.value)}
+                                >
+                                    <span className="option-icon">{option.icon}</span>
+                                    <span className="option-label">{option.label}</span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                );
+
+            case 8:
+                return (
+                    <div className="step-content">
+                        <h2>{t.steps.activity.title}</h2>
+                        <p className="step-description">{t.steps.activity.description}</p>
+                        <div className="options-list">
+                            {t.steps.activity.options.map((option) => (
+                                <button
+                                    key={option.value}
+                                    type="button"
+                                    className={`option-list-item ${formData.activityLevel === option.value ? "selected" : ""
+                                        }`}
+                                    onClick={() => updateField("activityLevel", option.value)}
+                                >
+                                    <span className="option-icon">{option.icon}</span>
+                                    <div className="option-text">
+                                        <span className="option-label">{option.label}</span>
+                                        <span className="option-description">{option.description}</span>
+                                    </div>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                );
+
+            case 9:
+                return (
+                    <div className="step-content">
+                        <h2>{t.steps.restrictions.title}</h2>
+                        <p className="step-description">{t.steps.restrictions.description}</p>
+                        <div className="options-grid small">
+                            {t.steps.restrictions.options.map((option) => (
+                                <button
+                                    key={option.value}
+                                    type="button"
+                                    className={`option-card small ${formData.restrictions.includes(option.value) ? "selected" : ""
+                                        }`}
+                                    onClick={() => {
+                                        if (formData.restrictions.includes(option.value)) {
+                                            updateField(
+                                                "restrictions",
+                                                formData.restrictions.filter((r) => r !== option.value)
+                                            );
+                                        } else {
+                                            updateField("restrictions", [
+                                                ...formData.restrictions,
+                                                option.value,
+                                            ]);
+                                        }
+                                    }}
+                                >
+                                    <span className="option-label">{option.label}</span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                );
+
+            case 10:
+                return (
+                    <div className="step-content">
+                        <h2>{t.steps.final.title}</h2>
+                        <p className="step-description">{t.steps.final.description}</p>
+
+                        <div className="final-options">
+                            <div className="option-group">
+                                <label>{t.steps.final.meals}</label>
+                                <select
+                                    value={formData.mealsPerDay}
+                                    onChange={(e) => updateField("mealsPerDay", e.target.value)}
+                                    className="input-large"
+                                >
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                </select>
+                            </div>
+
+                            <div className="option-group">
+                                <label>{t.steps.final.budget}</label>
+                                <div className="button-group-inline">
+                                    {t.steps.final.budgetOptions.map((option) => (
+                                        <button
+                                            key={option.value}
+                                            type="button"
+                                            className={`btn-option ${formData.budget === option.value ? "selected" : ""
+                                                }`}
+                                            onClick={() => updateField("budget", option.value)}
+                                        >
+                                            {option.label}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="option-group">
+                                <label>{t.steps.final.skill}</label>
+                                <div className="button-group-inline">
+                                    {t.steps.final.skillOptions.map((option) => (
+                                        <button
+                                            key={option.value}
+                                            type="button"
+                                            className={`btn-option ${formData.cookingSkill === option.value ? "selected" : ""
+                                                }`}
+                                            onClick={() => updateField("cookingSkill", option.value)}
+                                        >
+                                            {option.label}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+
+            default:
+                return null;
+        }
+    };
+
+    return (
+        <div className={styles.quizContainer}>
+            <div className={styles.quizHeader}>
+                <h1>{t.title}</h1>
+                <div className={styles.progressContainer}>
+                    <div className={styles.progressBar}>
+                        <div
+                            className={styles.progressFill}
+                            style={{ width: `${(currentStep / totalSteps) * 100}%` }}
+                        />
+                    </div>
+                    <p className={styles.progressText}>
+                        {t.step} {currentStep} {t.of} {totalSteps}
+                    </p>
+                </div>
+            </div>
+
+            <form onSubmit={handleSubmit} className={styles.quizForm}>
+                {renderStep()}
+
+                <div className="button-container">
+                    {currentStep > 1 && (
+                        <button type="button" onClick={prevStep} className="btn-back">
+                            ← {t.back}
+                        </button>
+                    )}
+
+                    {currentStep < totalSteps ? (
+                        <button
+                            type="button"
+                            onClick={nextStep}
+                            className="btn-next"
+                            disabled={!canProceed()}
+                        >
+                            {t.next} →
+                        </button>
+                    ) : (
+                        <button
+                            type="submit"
+                            className="btn-submit"
+                            disabled={loading || !canProceed()}
+                        >
+                            {loading ? t.generating : t.submit}
+                        </button>
+                    )}
+                </div>
+            </form>
+            flex-direction: column;
+            align-items: center;
+        }
+
+            .quiz-header {
+                width: 100%;
+            max-width: 700px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+            .quiz-header h1 {
+                font - size: 2.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+            .progress-container {
+                background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+            .progress-bar {
+                width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+            .progress-fill {
+                height: 100%;
+            background: white;
+            border-radius: 10px;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+            .progress-text {
+                color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+            .quiz-form {
+                width: 100%;
+            max-width: 700px;
+            background: white;
+            padding: 60px 50px;
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.4s ease-out;
+        }
+
+            @keyframes slideUp {
+                from {
+                opacity: 0;
+            transform: translateY(20px);
+          }
+            to {
+                opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+            .step-content {
+                min - height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+            .step-content h2 {
+                font - size: 2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+        }
+
+            .step-description {
+                font - size: 1.1rem;
+            color: #666;
+            margin-bottom: 40px;
+            max-width: 500px;
+        }
+
+            .input-large {
+                width: 100%;
+            max-width: 500px;
+            padding: 22px 32px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.12),
+            inset 0 2px 4px rgba(255, 255, 255, 0.9),
+            inset 0 -2px 4px rgba(0, 0, 0, 0.03);
+            color: #1a1a1a;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+            .input-large::placeholder {
+                color: #aaa;
+            font-weight: 500;
+        }
+
+            .input-large:focus {
+                outline: none;
+            background: white;
+            box-shadow: 0 12px 48px rgba(102, 126, 234, 0.25),
+            0 0 0 5px rgba(102, 126, 234, 0.15),
+            inset 0 2px 4px rgba(102, 126, 234, 0.08);
+            transform: translateY(-3px) scale(1.02);
+            border: 2px solid rgba(102, 126, 234, 0.4);
+        }
+
+            .input-large:hover:not(:focus) {
+                box - shadow: 0 10px 40px rgba(102, 126, 234, 0.18),
+            inset 0 2px 4px rgba(255, 255, 255, 0.9),
+            inset 0 -2px 4px rgba(0, 0, 0, 0.03);
+            transform: translateY(-1px);
+        }
+
+            select.input-large {
+                cursor: pointer;
+            appearance: none;
+            background-image:
+            linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.98) 100%),
+            url("data:image/svg+xml,%3Csvg width='14' height='9' viewBox='0 0 14 9' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L7 7L13 1' stroke='%23667eea' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat, no-repeat;
+            background-position: center, right 24px center;
+            padding-right: 60px;
+        }
+
+            select.input-large:focus {
+                background - image:
+            linear-gradient(135deg, #ffffff 0%, #ffffff 100%),
+            url("data:image/svg+xml,%3Csvg width='14' height='9' viewBox='0 0 14 9' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L7 7L13 1' stroke='%23667eea' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        }
+
+            .input-row {
+                display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+            .input-with-unit {
+                position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+
+            .input-with-unit .unit {
+                position: absolute;
+            right: 32px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            pointer-events: none;
+            filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.3));
+        }
+
+            .options-grid {
+                display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            width: 100%;
+        }
+
+            .options-grid.small {
+                grid - template - columns: repeat(auto-fit, minmax(140px, 1fr));
+        }
+
+            .option-card {
+                padding: 28px 22px;
+            border: none;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 6px 24px rgba(102, 126, 234, 0.1),
+            inset 0 1px 2px rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+        }
+
+            .option-card.small {
+                padding: 20px 16px;
+        }
+
+            .option-card:hover {
+                background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.2),
+            inset 0 1px 2px rgba(255, 255, 255, 0.9);
+            transform: translateY(-4px) scale(1.02);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+            .option-card.selected {
+                background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+            box-shadow: 0 12px 48px rgba(102, 126, 234, 0.3),
+            inset 0 2px 4px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px) scale(1.03);
+            border: 2px solid rgba(102, 126, 234, 0.5);
+        }
+
+            .option-icon {
+                font - size: 2.8rem;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+            .option-label {
+                font - size: 1.05rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+            .options-list {
+                display: flex;
+            flex-direction: column;
+            gap: 14px;
+            width: 100%;
+        }
+
+            .option-list-item {
+                padding: 22px 28px;
+            border: none;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            text-align: left;
+            box-shadow: 0 6px 24px rgba(102, 126, 234, 0.1),
+            inset 0 1px 2px rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+        }
+
+            .option-list-item:hover {
+                background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.2),
+            inset 0 1px 2px rgba(255, 255, 255, 0.9);
+            transform: translateX(4px);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+            .option-list-item.selected {
+                background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+            box-shadow: 0 12px 48px rgba(102, 126, 234, 0.3),
+            inset 0 2px 4px rgba(102, 126, 234, 0.1);
+            border: 2px solid rgba(102, 126, 234, 0.5);
+        }
+
+            .option-list-item .option-icon {
+                font - size: 2.2rem;
+            flex-shrink: 0;
+        }
+
+            .option-text {
+                display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+            .option-description {
+                font - size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+            .final-options {
+                display: flex;
+            flex-direction: column;
+            gap: 35px;
+            width: 100%;
+        }
+
+            .option-group {
+                display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+            .option-group label {
+                font - size: 1.15rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            text-align: left;
+        }
+
+            .button-group-inline {
+                display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+            .btn-option {
+                flex: 1;
+            min-width: 110px;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 6px 24px rgba(102, 126, 234, 0.1),
+            inset 0 1px 2px rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            color: #1a1a1a;
+        }
+
+            .btn-option:hover {
+                background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.2);
+            transform: translateY(-3px);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+            .btn-option.selected {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 12px 48px rgba(102, 126, 234, 0.4);
+            transform: translateY(-2px);
+            border: 2px solid rgba(102, 126, 234, 0.8);
+        }
+
+            .button-container {
+                display: flex;
+            gap: 16px;
+            margin-top: 60px;
+            justify-content: space-between;
+        }
+
+            .btn-back,
+            .btn-next,
+            .btn-submit {
+                padding: 18px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.15rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+            .btn-back {
+                background: rgba(255, 255, 255, 0.9);
+            color: #667eea;
+            box-shadow: 0 6px 24px rgba(102, 126, 234, 0.15),
+            inset 0 1px 2px rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+            .btn-back:hover {
+                background: white;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.25);
+            transform: translateY(-3px);
+            border: 2px solid rgba(102, 126, 234, 0.5);
+        }
+
+            .btn-next,
+            .btn-submit {
+                flex: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4),
+            inset 0 1px 2px rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+            .btn-next::before,
+            .btn-submit::before {
+                content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+            .btn-next:hover::before,
+            .btn-submit:hover::before {
+                left: 100%;
+        }
+
+            .btn-next:hover:not(:disabled),
+            .btn-submit:hover:not(:disabled) {
+                transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 48px rgba(102, 126, 234, 0.5),
+            inset 0 1px 2px rgba(255, 255, 255, 0.3);
+        }
+
+            .btn-next:active:not(:disabled),
+            .btn-submit:active:not(:disabled) {
+                transform: translateY(-2px) scale(1.01);
+        }
+
+            .btn-next:disabled,
+            .btn-submit:disabled {
+                opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
+        }
+
+            @media (max-width: 768px) {
+          .quiz - header h1 {
+                font - size: 2rem;
+          }
+
+            .quiz-form {
+                padding: 40px 25px;
+          }
+
+            .step-content h2 {
+                font - size: 1.6rem;
+          }
+
+            .input-row {
+                grid - template - columns: 1fr;
+          }
+
+            .options-grid {
+                grid - template - columns: 1fr;
+          }
+
+            .button-group-inline {
+                flex - direction: column;
+          }
+        }
+      `}</style>
+        </div >
+    );
+}
+
+const translations = {
+    "pt-BR": {
+        title: "Crie seu Plano Alimentar",
+        step: "Etapa",
+        of: "de",
+        back: "Voltar",
+        next: "Próximo",
+        submit: "Gerar Prévia",
+        generating: "Gerando...",
+        error: "Erro ao gerar prévia. Tente novamente.",
+        steps: {
+            name: {
+                title: "Qual é o seu nome?",
+                description: "Vamos personalizar sua experiência",
+                placeholder: "Digite seu nome completo",
+            },
+            email: {
+                title: "Qual é o seu email?",
+                description: "Enviaremos seu plano alimentar para este endereço",
+                placeholder: "seu@email.com",
+            },
+            age: {
+                title: "Qual é a sua idade e gênero?",
+                description: "Isso nos ajuda a calcular suas necessidades nutricionais",
+                male: "Masculino",
+                female: "Feminino",
+                other: "Outro",
+            },
+            weight: {
+                title: "Qual é o seu peso atual?",
+                description: "Em quilogramas (kg)",
+            },
+            height: {
+                title: "Qual é a sua altura?",
+                description: "Em centímetros (cm)",
+            },
+            goals: {
+                title: "Quais são seus objetivos?",
+                description: "Você pode selecionar mais de um",
+                options: [
+                    { value: "perder peso", label: "Perder peso", icon: "📉" },
+                    { value: "ganhar massa muscular", label: "Ganhar massa", icon: "💪" },
+                    { value: "manter peso", label: "Manter peso", icon: "⚖️" },
+                    { value: "melhorar saúde", label: "Melhorar saúde", icon: "❤️" },
+                    { value: "aumentar energia", label: "Mais energia", icon: "⚡" },
+                    { value: "melhorar digestão", label: "Melhorar digestão", icon: "🌿" },
+                ],
+            },
+            style: {
+                title: "Qual é o seu estilo alimentar?",
+                description: "Escolha o que melhor se encaixa com você",
+                options: [
+                    { value: "flexível - como de tudo", label: "Como de tudo", icon: "🍽️" },
+                    { value: "onívoro", label: "Onívoro", icon: "🥩" },
+                    { value: "vegetariano", label: "Vegetariano", icon: "🥗" },
+                    { value: "vegano", label: "Vegano", icon: "🌱" },
+                    { value: "low carb", label: "Low Carb", icon: "🥑" },
+                    { value: "keto", label: "Keto", icon: "🥓" },
+                ],
+            },
+            activity: {
+                title: "Qual é o seu nível de atividade física?",
+                description: "Isso afeta suas necessidades calóricas",
+                options: [
+                    {
+                        value: "sedentário",
+                        label: "Sedentário",
+                        description: "Pouco ou nenhum exercício",
+                        icon: "🛋️",
+                    },
+                    {
+                        value: "leve",
+                        label: "Leve",
+                        description: "Exercício 1-2x por semana",
+                        icon: "🚶",
+                    },
+                    {
+                        value: "moderado",
+                        label: "Moderado",
+                        description: "Exercício 3-4x por semana",
+                        icon: "🏃",
+                    },
+                    {
+                        value: "intenso",
+                        label: "Intenso",
+                        description: "Exercício 5-7x por semana",
+                        icon: "🏋️",
+                    },
+                ],
+            },
+            restrictions: {
+                title: "Você tem alguma restrição alimentar?",
+                description: "Selecione todas que se aplicam (opcional)",
+                options: [
+                    { value: "lactose", label: "Lactose" },
+                    { value: "glúten", label: "Glúten" },
+                    { value: "nozes e castanhas", label: "Nozes" },
+                    { value: "frutos do mar", label: "Frutos do mar" },
+                    { value: "soja", label: "Soja" },
+                    { value: "ovos", label: "Ovos" },
+                ],
+            },
+            final: {
+                title: "Últimos detalhes",
+                description: "Personalize ainda mais seu plano",
+                meals: "Quantas refeições por dia?",
+                budget: "Orçamento",
+                budgetOptions: [
+                    { value: "low", label: "Econômico" },
+                    { value: "medium", label: "Médio" },
+                    { value: "high", label: "Alto" },
+                ],
+                skill: "Habilidade culinária",
+                skillOptions: [
+                    { value: "beginner", label: "Iniciante" },
+                    { value: "intermediate", label: "Intermediário" },
+                    { value: "advanced", label: "Avançado" },
+                ],
+            },
+        },
+    },
+    en: {
+        title: "Create Your Meal Plan",
+        step: "Step",
+        of: "of",
+        back: "Back",
+        next: "Next",
+        submit: "Generate Preview",
+        generating: "Generating...",
+        error: "Error generating preview. Please try again.",
+        steps: {
+            name: {
+                title: "What's your name?",
+                description: "Let's personalize your experience",
+                placeholder: "Enter your full name",
+            },
+            email: {
+                title: "What's your email?",
+                description: "We'll send your meal plan to this address",
+                placeholder: "your@email.com",
+            },
+            age: {
+                title: "What's your age and gender?",
+                description: "This helps us calculate your nutritional needs",
+                male: "Male",
+                female: "Female",
+                other: "Other",
+            },
+            weight: {
+                title: "What's your current weight?",
+                description: "In kilograms (kg)",
+            },
+            height: {
+                title: "What's your height?",
+                description: "In centimeters (cm)",
+            },
+            goals: {
+                title: "What are your goals?",
+                description: "You can select more than one",
+                options: [
+                    { value: "lose weight", label: "Lose weight", icon: "📉" },
+                    { value: "gain muscle", label: "Gain muscle", icon: "💪" },
+                    { value: "maintain weight", label: "Maintain weight", icon: "⚖️" },
+                    { value: "improve health", label: "Improve health", icon: "❤️" },
+                    { value: "increase energy", label: "More energy", icon: "⚡" },
+                    { value: "improve digestion", label: "Better digestion", icon: "🌿" },
+                ],
+            },
+            style: {
+                title: "What's your dietary style?",
+                description: "Choose what fits you best",
+                options: [
+                    { value: "flexible - eat everything", label: "Eat everything", icon: "🍽️" },
+                    { value: "omnivore", label: "Omnivore", icon: "🥩" },
+                    { value: "vegetarian", label: "Vegetarian", icon: "🥗" },
+                    { value: "vegan", label: "Vegan", icon: "🌱" },
+                    { value: "low carb", label: "Low Carb", icon: "🥑" },
+                    { value: "keto", label: "Keto", icon: "🥓" },
+                ],
+            },
+            activity: {
+                title: "What's your activity level?",
+                description: "This affects your caloric needs",
+                options: [
+                    {
+                        value: "sedentary",
+                        label: "Sedentary",
+                        description: "Little or no exercise",
+                        icon: "🛋️",
+                    },
+                    {
+                        value: "light",
+                        label: "Light",
+                        description: "Exercise 1-2x per week",
+                        icon: "🚶",
+                    },
+                    {
+                        value: "moderate",
+                        label: "Moderate",
+                        description: "Exercise 3-4x per week",
+                        icon: "🏃",
+                    },
+                    {
+                        value: "intense",
+                        label: "Intense",
+                        description: "Exercise 5-7x per week",
+                        icon: "🏋️",
+                    },
+                ],
+            },
+            restrictions: {
+                title: "Do you have any dietary restrictions?",
+                description: "Select all that apply (optional)",
+                options: [
+                    { value: "lactose", label: "Lactose" },
+                    { value: "gluten", label: "Gluten" },
+                    { value: "nuts", label: "Nuts" },
+                    { value: "seafood", label: "Seafood" },
+                    { value: "soy", label: "Soy" },
+                    { value: "eggs", label: "Eggs" },
+                ],
+            },
+            final: {
+                title: "Final details",
+                description: "Customize your plan even more",
+                meals: "How many meals per day?",
+                budget: "Budget",
+                budgetOptions: [
+                    { value: "low", label: "Budget-friendly" },
+                    { value: "medium", label: "Medium" },
+                    { value: "high", label: "Premium" },
+                ],
+                skill: "Cooking skill",
+                skillOptions: [
+                    { value: "beginner", label: "Beginner" },
+                    { value: "intermediate", label: "Intermediate" },
+                    { value: "advanced", label: "Advanced" },
+                ],
+            },
+        },
+    },
+};
