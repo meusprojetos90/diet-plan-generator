@@ -1,48 +1,50 @@
+"use client";
+
 import Link from "next/link";
 
 export default function CancelPage() {
-    return (
-        <div className="cancel-container">
-            <div className="cancel-card">
-                <div className="cancel-icon">❌</div>
-                <h1>Pagamento Cancelado</h1>
-                <h2>Payment Cancelled</h2>
+  return (
+    <div className="cancel-container">
+      <div className="cancel-card">
+        <div className="cancel-icon">❌</div>
+        <h1>Pagamento Cancelado</h1>
+        <h2>Payment Cancelled</h2>
 
-                <p className="message">
-                    Seu pagamento foi cancelado. Nenhuma cobrança foi realizada.
-                </p>
-                <p className="message-en">
-                    Your payment was cancelled. No charges were made.
-                </p>
+        <p className="message">
+          Seu pagamento foi cancelado. Nenhuma cobrança foi realizada.
+        </p>
+        <p className="message-en">
+          Your payment was cancelled. No charges were made.
+        </p>
 
-                <div className="info-box">
-                    <h3>💡 O que fazer agora? / What to do now?</h3>
-                    <ul>
-                        <li>
-                            Você pode tentar novamente quando quiser / You can try again
-                            anytime
-                        </li>
-                        <li>
-                            Seus dados foram salvos / Your data has been saved
-                        </li>
-                        <li>
-                            Entre em contato se tiver dúvidas / Contact us if you have
-                            questions
-                        </li>
-                    </ul>
-                </div>
+        <div className="info-box">
+          <h3>💡 O que fazer agora? / What to do now?</h3>
+          <ul>
+            <li>
+              Você pode tentar novamente quando quiser / You can try again
+              anytime
+            </li>
+            <li>
+              Seus dados foram salvos / Your data has been saved
+            </li>
+            <li>
+              Entre em contato se tiver dúvidas / Contact us if you have
+              questions
+            </li>
+          </ul>
+        </div>
 
-                <div className="button-group">
-                    <Link href="/preview" className="retry-button">
-                        Tentar Novamente / Try Again
-                    </Link>
-                    <Link href="/" className="home-link">
-                        Voltar ao Início / Back to Home
-                    </Link>
-                </div>
-            </div>
+        <div className="button-group">
+          <Link href="/preview" className="retry-button">
+            Tentar Novamente / Try Again
+          </Link>
+          <Link href="/" className="home-link">
+            Voltar ao Início / Back to Home
+          </Link>
+        </div>
+      </div>
 
-            <style jsx>{`
+      <style jsx>{`
         .cancel-container {
           min-height: 100vh;
           display: flex;
@@ -145,6 +147,6 @@ export default function CancelPage() {
           font-weight: 600;
         }
       `}</style>
-        </div>
-    );
+    </div>
+  );
 }
