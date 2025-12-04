@@ -38,11 +38,14 @@ export default function QuizPage() {
 
     const t = translations[locale];
 
-    // Total de etapas
-    const totalSteps = 10;
+    // Total de etapas (agora 12 com a etapa de loading)
+    const totalSteps = 12;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        // Avançar para a etapa de loading
+        setCurrentStep(12);
         setLoading(true);
 
         try {
@@ -74,6 +77,7 @@ export default function QuizPage() {
         } catch (error) {
             console.error("Error:", error);
             alert(t.error);
+            setCurrentStep(11); // Voltar para a última etapa em caso de erro
         } finally {
             setLoading(false);
         }
@@ -84,7 +88,12 @@ export default function QuizPage() {
     };
 
     const nextStep = () => {
-        setCurrentStep((s) => Math.min(s + 1, totalSteps));
+        if (currentStep === 11) {
+            // Na última etapa, submeter o formulário
+            handleSubmit(new Event('submit') as any);
+        } else {
+            setCurrentStep((s) => Math.min(s + 1, totalSteps));
+        }
     };
 
     const prevStep = () => {
@@ -100,19 +109,23 @@ export default function QuizPage() {
             case 3:
                 return formData.age !== "" && parseInt(formData.age) >= 10;
             case 4:
-                return formData.weight !== "" && parseFloat(formData.weight) > 0;
+                return true; // Gender sempre tem um valor padrão
             case 5:
-                return formData.height !== "" && parseFloat(formData.height) > 0;
+                return formData.weight !== "" && parseFloat(formData.weight) > 0;
             case 6:
-                return formData.goals.length > 0;
+                return formData.height !== "" && parseFloat(formData.height) > 0;
             case 7:
-                return formData.style !== "";
+                return formData.goals.length > 0;
             case 8:
-                return formData.activityLevel !== "";
+                return formData.style !== "";
             case 9:
-                return true; // Restrições são opcionais
+                return formData.activityLevel !== "";
             case 10:
+                return true; // Restrições são opcionais
+            case 11:
                 return true; // Budget e skill têm valores padrão
+            case 12:
+                return false; // Etapa de loading, não pode avançar
             default:
                 return false;
         }
@@ -157,31 +170,54 @@ export default function QuizPage() {
                     <div className="step-content">
                         <h2>{t.steps.age.title}</h2>
                         <p className="step-description">{t.steps.age.description}</p>
-                        <div className="input-row">
-                            <input
-                                type="number"
-                                value={formData.age}
-                                onChange={(e) => updateField("age", e.target.value)}
-                                placeholder="25"
-                                min="10"
-                                max="100"
-                                autoFocus
-                                className="input-large"
-                            />
-                            <select
-                                value={formData.gender}
-                                onChange={(e) => updateField("gender", e.target.value)}
-                                className="input-large"
-                            >
-                                <option value="male">{t.steps.age.male}</option>
-                                <option value="female">{t.steps.age.female}</option>
-                                <option value="other">{t.steps.age.other}</option>
-                            </select>
-                        </div>
+                        <input
+                            type="number"
+                            value={formData.age}
+                            onChange={(e) => updateField("age", e.target.value)}
+                            placeholder="25"
+                            min="10"
+                            max="100"
+                            autoFocus
+                            className="input-large"
+                        />
                     </div>
                 );
 
             case 4:
+                return (
+                    <div className="step-content">
+                        <h2>{t.steps.gender.title}</h2>
+                        <p className="step-description">{t.steps.gender.description}</p>
+                        <div className="options-grid">
+                            <button
+                                type="button"
+                                className={`option-card ${formData.gender === "male" ? "selected" : ""}`}
+                                onClick={() => updateField("gender", "male")}
+                            >
+                                <span className="option-icon">👨</span>
+                                <span className="option-label">{t.steps.gender.male}</span>
+                            </button>
+                            <button
+                                type="button"
+                                className={`option-card ${formData.gender === "female" ? "selected" : ""}`}
+                                onClick={() => updateField("gender", "female")}
+                            >
+                                <span className="option-icon">👩</span>
+                                <span className="option-label">{t.steps.gender.female}</span>
+                            </button>
+                            <button
+                                type="button"
+                                className={`option-card ${formData.gender === "other" ? "selected" : ""}`}
+                                onClick={() => updateField("gender", "other")}
+                            >
+                                <span className="option-icon">⚧️</span>
+                                <span className="option-label">{t.steps.gender.other}</span>
+                            </button>
+                        </div>
+                    </div>
+                );
+
+            case 5:
                 return (
                     <div className="step-content">
                         <h2>{t.steps.weight.title}</h2>
@@ -203,7 +239,7 @@ export default function QuizPage() {
                     </div>
                 );
 
-            case 5:
+            case 6:
                 return (
                     <div className="step-content">
                         <h2>{t.steps.height.title}</h2>
@@ -224,7 +260,7 @@ export default function QuizPage() {
                     </div>
                 );
 
-            case 6:
+            case 7:
                 return (
                     <div className="step-content">
                         <h2>{t.steps.goals.title}</h2>
@@ -255,7 +291,7 @@ export default function QuizPage() {
                     </div>
                 );
 
-            case 7:
+            case 8:
                 return (
                     <div className="step-content">
                         <h2>{t.steps.style.title}</h2>
@@ -277,7 +313,7 @@ export default function QuizPage() {
                     </div>
                 );
 
-            case 8:
+            case 9:
                 return (
                     <div className="step-content">
                         <h2>{t.steps.activity.title}</h2>
@@ -302,7 +338,7 @@ export default function QuizPage() {
                     </div>
                 );
 
-            case 9:
+            case 10:
                 return (
                     <div className="step-content">
                         <h2>{t.steps.restrictions.title}</h2>
@@ -335,7 +371,7 @@ export default function QuizPage() {
                     </div>
                 );
 
-            case 10:
+            case 11:
                 return (
                     <div className="step-content">
                         <h2>{t.steps.final.title}</h2>
@@ -393,6 +429,23 @@ export default function QuizPage() {
                     </div>
                 );
 
+            case 12:
+                return (
+                    <div className="step-content loading-step">
+                        <div className="loading-animation">
+                            <div className="spinner"></div>
+                        </div>
+                        <h2>{t.steps.loading.title}</h2>
+                        <p className="step-description">{t.steps.loading.description}</p>
+                        <div className="loading-messages">
+                            <p>✨ {t.steps.loading.messages[0]}</p>
+                            <p>🧮 {t.steps.loading.messages[1]}</p>
+                            <p>🥗 {t.steps.loading.messages[2]}</p>
+                            <p>📋 {t.steps.loading.messages[3]}</p>
+                        </div>
+                    </div>
+                );
+
             default:
                 return null;
         }
@@ -418,33 +471,80 @@ export default function QuizPage() {
             <form onSubmit={handleSubmit} className="quiz-form">
                 {renderStep()}
 
-                <div className="button-container">
-                    {currentStep > 1 && (
-                        <button type="button" onClick={prevStep} className="btn-back">
-                            ← {t.back}
-                        </button>
-                    )}
+                {currentStep !== 12 && (
+                    <div className="button-container">
+                        {currentStep > 1 && (
+                            <button type="button" onClick={prevStep} className="btn-back">
+                                ← {t.back}
+                            </button>
+                        )}
 
-                    {currentStep < totalSteps ? (
-                        <button
-                            type="button"
-                            onClick={nextStep}
-                            className="btn-next"
-                            disabled={!canProceed()}
-                        >
-                            {t.next} →
-                        </button>
-                    ) : (
-                        <button
-                            type="submit"
-                            className="btn-submit"
-                            disabled={loading || !canProceed()}
-                        >
-                            {loading ? t.generating : t.submit}
-                        </button>
-                    )}
-                </div>
+                        {currentStep < 11 ? (
+                            <button
+                                type="button"
+                                onClick={nextStep}
+                                className="btn-next"
+                                disabled={!canProceed()}
+                            >
+                                {t.next} →
+                            </button>
+                        ) : (
+                            <button
+                                type="button"
+                                onClick={nextStep}
+                                className="btn-submit"
+                                disabled={loading || !canProceed()}
+                            >
+                                {t.submit}
+                            </button>
+                        )}
+                    </div>
+                )}
             </form>
+
+            <style jsx>{`
+                .loading-step {
+                    text-align: center;
+                    padding: 40px 20px;
+                }
+
+                .loading-animation {
+                    margin-bottom: 30px;
+                }
+
+                .spinner {
+                    width: 80px;
+                    height: 80px;
+                    margin: 0 auto;
+                    border: 6px solid #f3f3f3;
+                    border-top: 6px solid #667eea;
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                }
+
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+
+                .loading-messages {
+                    margin-top: 40px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 15px;
+                }
+
+                .loading-messages p {
+                    font-size: 1.1rem;
+                    color: #555;
+                    animation: fadeIn 0.5s ease-in;
+                }
+
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+            `}</style>
         </div>
     );
 }
@@ -471,8 +571,12 @@ const translations = {
                 placeholder: "seu@email.com",
             },
             age: {
-                title: "Qual é a sua idade e gênero?",
+                title: "Qual é a sua idade?",
                 description: "Isso nos ajuda a calcular suas necessidades nutricionais",
+            },
+            gender: {
+                title: "Qual é o seu sexo?",
+                description: "Selecione a opção que melhor te representa",
                 male: "Masculino",
                 female: "Feminino",
                 other: "Outro",
@@ -568,6 +672,16 @@ const translations = {
                     { value: "advanced", label: "Avançado" },
                 ],
             },
+            loading: {
+                title: "Gerando seu plano personalizado...",
+                description: "Por favor, aguarde enquanto criamos seu plano alimentar perfeito",
+                messages: [
+                    "Analisando suas informações",
+                    "Calculando necessidades nutricionais",
+                    "Selecionando receitas personalizadas",
+                    "Finalizando seu plano",
+                ],
+            },
         },
     },
     en: {
@@ -591,8 +705,12 @@ const translations = {
                 placeholder: "your@email.com",
             },
             age: {
-                title: "What's your age and gender?",
+                title: "What's your age?",
                 description: "This helps us calculate your nutritional needs",
+            },
+            gender: {
+                title: "What's your gender?",
+                description: "Select the option that best represents you",
                 male: "Male",
                 female: "Female",
                 other: "Other",
@@ -686,6 +804,16 @@ const translations = {
                     { value: "beginner", label: "Beginner" },
                     { value: "intermediate", label: "Intermediate" },
                     { value: "advanced", label: "Advanced" },
+                ],
+            },
+            loading: {
+                title: "Generating your personalized plan...",
+                description: "Please wait while we create your perfect meal plan",
+                messages: [
+                    "Analyzing your information",
+                    "Calculating nutritional needs",
+                    "Selecting personalized recipes",
+                    "Finalizing your plan",
                 ],
             },
         },
