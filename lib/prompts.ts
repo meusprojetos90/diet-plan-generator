@@ -8,11 +8,15 @@ export interface UserIntake {
   age: number;
   weight: number; // kg
   height: number; // cm
+  targetWeight?: number; // kg - peso desejado
   gender: "male" | "female" | "other";
   goals: string[]; // e.g., ["perder peso", "ganhar massa"] - pode ter múltiplos
   restrictions: string[]; // e.g., ["lactose", "gluten"]
   style: string; // e.g., "vegetariano", "vegano", "onívoro", "flexível"
   activityLevel: string; // sedentário, leve, moderado, intenso
+  workoutLocation?: "home" | "gym"; // local de treino
+  injuries?: string[]; // lesões ou problemas de articulação
+  preferredWorkoutTime?: string; // horário preferido para treinar
   mealsPerDay: number;
   preferredMealTimes?: string[]; // e.g., ["08:00", "12:00", "15:00", "19:00"]
   budget?: "low" | "medium" | "high";
@@ -27,12 +31,30 @@ export interface MealPlanOutput {
   macros_summary: MacrosSummary;
 }
 
+export interface WorkoutPlan {
+  day: number;
+  focus: string; // e.g., "Treino de Peito e Tríceps", "Cardio", "Descanso"
+  duration: number; // minutes
+  exercises: Exercise[];
+  notes?: string;
+}
+
+export interface Exercise {
+  name: string;
+  sets: number;
+  reps: string; // e.g., "12", "10-12", "até a falha"
+  rest: number; // seconds
+  technique?: string; // tips on form/technique
+  equipment?: string; // e.g., "halteres", "barra", "peso corporal"
+}
+
 export interface DayPlan {
   day: number;
   date?: string;
   total_calories: number;
   total_macros: Macros;
   meals: Meal[];
+  workout?: WorkoutPlan;
 }
 
 export interface Meal {
@@ -126,7 +148,7 @@ function generatePromptPTBR(intake: UserIntake, days: number): string {
 - Habilidade culinária: ${skillText}
 
 **TAREFA:**
-Crie um plano alimentar completo e personalizado para ${days} dias. O plano deve:
+Crie um plano alimentar E DE TREINO completo e personalizado para ${days} dias. O plano deve:
 
 1. **Ser nutricionalmente balanceado** com base nos objetivos do cliente (${goalsText})
 2. **Respeitar todas as restrições** alimentares mencionadas
@@ -136,6 +158,12 @@ Crie um plano alimentar completo e personalizado para ${days} dias. O plano deve
 6. **Ser prático e realista** considerando a habilidade culinária e orçamento
 7. **Incluir dicas úteis** de preparo, substituições e armazenamento
 8. **IMPORTANTE: A lista de compras deve conter TODOS os ingredientes necessários para os ${days} dias completos do plano**
+9. **INCLUIR TREINOS DIÁRIOS** adequados ao nível de atividade (${activityLevel}) e objetivos (${goalsText})
+   - Especifique exercícios, séries, repetições e tempo de descanso
+   - Inclua dicas de técnica e equipamento necessário
+   - Varie os grupos musculares ao longo da semana
+   - Inclua dias de descanso ativo ou completo quando apropriado
+
 
 **FORMATO DE SAÍDA (JSON):**
 Retorne APENAS um objeto JSON válido, sem texto adicional, seguindo exatamente esta estrutura:
@@ -176,7 +204,55 @@ Retorne APENAS um objeto JSON válido, sem texto adicional, seguindo exatamente 
           "difficulty": "easy",
           "tips": "Você pode adicionar queijo branco para mais proteína. O espinafre pode ser substituído por couve."
         }
-      ]
+      ],
+      "workout": {
+        "day": 1,
+        "focus": "Treino de Peito e Tríceps",
+        "duration": 60,
+        "exercises": [
+          {
+            "name": "Supino reto com barra",
+            "sets": 4,
+            "reps": "8-10",
+            "rest": 90,
+            "technique": "Desça a barra até o peito, mantenha os cotovelos a 45 graus do corpo",
+            "equipment": "barra e banco"
+          },
+          {
+            "name": "Supino inclinado com halteres",
+            "sets": 3,
+            "reps": "10-12",
+            "rest": 60,
+            "technique": "Incline o banco a 30-45 graus, desça os halteres até a linha do peito",
+            "equipment": "halteres e banco inclinado"
+          },
+          {
+            "name": "Crucifixo no cabo",
+            "sets": 3,
+            "reps": "12-15",
+            "rest": 45,
+            "technique": "Mantenha leve flexão nos cotovelos, foque na contração do peito",
+            "equipment": "cross over"
+          },
+          {
+            "name": "Tríceps testa com barra W",
+            "sets": 3,
+            "reps": "10-12",
+            "rest": 60,
+            "technique": "Mantenha os cotovelos fixos, desça a barra até a testa",
+            "equipment": "barra W e banco"
+          },
+          {
+            "name": "Tríceps corda no cabo",
+            "sets": 3,
+            "reps": "12-15",
+            "rest": 45,
+            "technique": "Abra a corda no final do movimento para máxima contração",
+            "equipment": "cabo e corda"
+          }
+        ],
+        "notes": "Faça 5-10 minutos de aquecimento antes. Alongue após o treino."
+      }
     }
   ],
   "shopping_list": [
