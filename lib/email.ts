@@ -1,6 +1,7 @@
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+const EMAIL_FROM = process.env.EMAIL_FROM || 'Cool Plan <noreply@replay.velare.app>';
 
 export async function sendWelcomeEmail(email: string, name: string) {
   if (!process.env.RESEND_API_KEY) {
@@ -10,7 +11,7 @@ export async function sendWelcomeEmail(email: string, name: string) {
 
   try {
     await resend.emails.send({
-      from: 'Meu Plano <onboarding@resend.dev>', // Update with verified domain if available
+      from: EMAIL_FROM,
       to: email,
       subject: 'Seu Plano Alimentar está pronto! 🥗',
       html: `
@@ -51,7 +52,7 @@ export async function sendAccountCreatedEmail(email: string, name: string) {
     const resetLink = `${process.env.NEXT_PUBLIC_APP_URL}/handler/forgot-password?email=${encodeURIComponent(email)}`;
 
     await resend.emails.send({
-      from: 'Meu Plano <onboarding@resend.dev>',
+      from: EMAIL_FROM,
       to: email,
       subject: '🎉 Sua conta foi criada! Configure sua senha',
       html: `

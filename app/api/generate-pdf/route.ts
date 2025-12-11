@@ -9,6 +9,7 @@ import { generatePDF } from "@/lib/pdf-generator";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+const EMAIL_FROM = process.env.EMAIL_FROM || 'Cool Plan <noreply@replay.velare.app>';
 
 export async function POST(req: NextRequest) {
     try {
@@ -64,7 +65,7 @@ export async function POST(req: NextRequest) {
         const isPtBr = intake.locale === "pt-BR";
 
         await resend.emails.send({
-            from: "Meu Plano <onboarding@resend.dev>",
+            from: EMAIL_FROM,
             to: email,
             subject: isPtBr
                 ? `Seu Plano Alimentar de ${days} dias está pronto!`
