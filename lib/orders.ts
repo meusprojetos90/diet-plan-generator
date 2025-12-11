@@ -56,22 +56,18 @@ export async function processSuccessfulOrder(
         try {
             // Convert intake to UserIntake format
             const userIntake: UserIntake = {
+                name: intakeData.name || 'Cliente',
                 age: intakeData.age || 30,
                 gender: intakeData.gender || 'male',
                 height: intakeData.height || 170,
                 weight: intakeData.weight || 70,
-                goal: intakeData.goal || 'maintenance',
-                activity: intakeData.activity_level || 'moderate',
-                dietary_restrictions: intakeData.dietary_restrictions || [],
-                allergies: intakeData.allergies || [],
-                preferred_foods: intakeData.preferred_foods || [],
-                disliked_foods: intakeData.disliked_foods || [],
-                meals_per_day: intakeData.meals_per_day || 5,
+                goals: intakeData.goals || [intakeData.goal || 'perder peso'],
+                restrictions: intakeData.dietary_restrictions || intakeData.restrictions || [],
+                style: intakeData.style || intakeData.diet_type || 'onívoro',
+                activityLevel: intakeData.activityLevel || intakeData.activity_level || 'moderado',
+                mealsPerDay: intakeData.mealsPerDay || intakeData.meals_per_day || 5,
                 locale: intakeData.locale || 'pt-BR',
-                has_gym_access: intakeData.has_gym_access ?? true,
-                workout_experience: intakeData.workout_experience || 'intermediate',
-                workout_days_per_week: intakeData.workout_days_per_week || 4,
-                available_time_minutes: intakeData.available_time_minutes || 60,
+                workoutLocation: intakeData.has_gym_access ? 'gym' : 'home',
             };
 
             // Generate meal plan using OpenAI

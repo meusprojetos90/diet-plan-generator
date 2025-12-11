@@ -1,15 +1,17 @@
-
 import { Pool } from 'pg';
+
+// Extend globalThis to include pgPool
+const globalForPg = globalThis as unknown as { pgPool?: Pool };
 
 let pool: Pool;
 
-if (!global.pgPool) {
-    global.pgPool = new Pool({
+if (!globalForPg.pgPool) {
+    globalForPg.pgPool = new Pool({
         connectionString: process.env.DATABASE_URL,
-        ssl: { rejectUnauthorized: false } // Required for Neon/AWS usually, verify if 'require' string param handles it
+        ssl: { rejectUnauthorized: false }
     });
 }
 
-pool = global.pgPool;
+pool = globalForPg.pgPool;
 
 export default pool;

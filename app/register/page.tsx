@@ -3,9 +3,9 @@
 import { SignUp, useUser } from "@stackframe/stack";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 
-export default function RegisterPage() {
+function RegisterContent() {
    const user = useUser();
    const router = useRouter();
 
@@ -106,5 +106,17 @@ export default function RegisterPage() {
         }
       `}</style>
       </div>
+   );
+}
+
+export default function RegisterPage() {
+   return (
+      <Suspense fallback={
+         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", color: "white", background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" }}>
+            Carregando...
+         </div>
+      }>
+         <RegisterContent />
+      </Suspense>
    );
 }

@@ -14,7 +14,7 @@ export async function GET() {
         `);
 
         return NextResponse.json({
-            plans: result.rows.map(p => ({
+            plans: result.rows.map((p: any) => ({
                 ...p,
                 price_brl: parseFloat(p.price_brl),
                 price_usd: parseFloat(p.price_usd),

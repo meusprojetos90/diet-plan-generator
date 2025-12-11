@@ -2,7 +2,43 @@
 import { NextRequest, NextResponse } from "next/server"
 import { stackServerApp } from "@/stack"
 import pool from "@/lib/db"
-import { generateMockMealPlan } from "@/lib/mock-data"
+
+// Simple mock meal plan generator (no type dependency)
+function generateSimpleMealPlan(days: number) {
+    const meals = [
+        { time: "08:00", name: "Café da Manhã", calories: 400 },
+        { time: "10:30", name: "Lanche da Manhã", calories: 200 },
+        { time: "13:00", name: "Almoço", calories: 600 },
+        { time: "16:00", name: "Lanche da Tarde", calories: 200 },
+        { time: "19:30", name: "Jantar", calories: 500 }
+    ]
+
+    return {
+        days: Array.from({ length: days }, (_, i) => ({
+            day: i + 1,
+            total_calories: 1900,
+            total_macros: { calories: 1900, protein: 120, carbs: 200, fat: 60, fiber: 25 },
+            meals: meals.map(m => ({
+                ...m,
+                recipe: "Receita de exemplo",
+                ingredients: [{ item: "Ingrediente", quantity: "100", unit: "g" }],
+                macros: { calories: m.calories, protein: 20, carbs: 30, fat: 10, fiber: 5 },
+                preparation_time: 15,
+                difficulty: "easy"
+            }))
+        })),
+        shopping_list: [
+            { item: "Frango", quantity: "2kg", category: "Proteínas" },
+            { item: "Arroz", quantity: "1kg", category: "Grãos" },
+            { item: "Vegetais variados", quantity: "2kg", category: "Vegetais" }
+        ],
+        notes: "Plano de teste gerado automaticamente.",
+        macros_summary: {
+            daily_average: { calories: 1900, protein: 120, carbs: 200, fat: 60, fiber: 25 },
+            weekly_total: { calories: 13300, protein: 840, carbs: 1400, fat: 420, fiber: 175 }
+        }
+    }
+}
 
 export async function GET(req: NextRequest) {
     try {
@@ -43,7 +79,7 @@ export async function GET(req: NextRequest) {
             locale: "pt-BR"
         }
 
-        const mealPlan = generateMockMealPlan(intake, days)
+        const mealPlan = generateSimpleMealPlan(days)
 
         // Mock Workout Plan
         const workoutPlan = {
@@ -60,7 +96,6 @@ export async function GET(req: NextRequest) {
         }
 
         // 3. Insert Plan
-        // Start date today
         const startDate = new Date()
         const endDate = new Date()
         endDate.setDate(endDate.getDate() + days)
