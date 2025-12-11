@@ -19,7 +19,7 @@ export default function RootLayout({
     return (
         <html lang="pt-BR">
             <body className={inter.className}>
-                <StackProvider app={stackServerApp}>
+                <StackProvider app={stackServerApp} lang="pt-BR">
                     <StackTheme>
                         {children}
                     </StackTheme>
