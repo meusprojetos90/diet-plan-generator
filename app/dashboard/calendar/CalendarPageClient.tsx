@@ -44,16 +44,23 @@ export default function CalendarPageClient() {
                 setIsLoading(true)
                 const data = await getUserPlan()
 
+                console.log("Calendar: getUserPlan result:", data ? "has data" : "no data")
+
                 if (!data || !data.plan) {
                     console.log("No plan found, using mock data")
                     setUseMockData(true)
                     setPlanData(generateMockData())
                 } else {
+                    console.log("Calendar: plan.id =", data.plan.id)
+                    console.log("Calendar: meal_plan days count =", data.plan.meal_plan?.days?.length || 0)
+                    console.log("Calendar: workout_plan days count =", data.plan.workout_plan?.days?.length || 0)
+
                     setPlanId(data.plan.id)
                     setProfileId(data.plan.user_id)
 
                     // Parse DB plan into UI format
                     const parsedPlan = parseDbPlan(data.plan, data.logs)
+                    console.log("Calendar: parsed plan keys count =", Object.keys(parsedPlan).length)
                     setPlanData(parsedPlan)
                 }
             } catch (error) {
@@ -76,16 +83,27 @@ export default function CalendarPageClient() {
         const workoutDays = plan.workout_plan?.days || []
         const planMap: Record<string, DayPlan> = {}
 
-        // We need to map relative days (day 1, day 2...) to real dates
-        // Starting from plan.start_date
+        if (days.length === 0) {
+            console.log("parseDbPlan: No days in meal_plan")
+            return planMap
+        }
+
+        // Generate for current month and next month (cyclically reusing plan days)
+        const today = new Date()
         const startDate = new Date(plan.start_date)
 
-        days.forEach((day: any) => {
-            // Calculate date for this day index (0-based inside generation, usually 1-based in JSON)
-            const dayOffset = (day.day || 1) - 1
-            const date = new Date(startDate)
-            date.setDate(date.getDate() + dayOffset)
+        // Generate 60 days of data centered around today
+        for (let offset = -30; offset <= 30; offset++) {
+            const date = new Date(today)
+            date.setDate(date.getDate() + offset)
             const dateKey = date.toDateString()
+
+            // Calculate which day in the plan this corresponds to (cyclical)
+            const daysSinceStart = Math.floor((date.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24))
+            const planDayIndex = ((daysSinceStart % days.length) + days.length) % days.length // Handle negative modulo
+            const day = days[planDayIndex]
+
+            if (!day) continue
 
             // Find logs for this date - l.date may be a Date object from PostgreSQL
             const dateStr = date.toISOString().split('T')[0] // YYYY-MM-DD
@@ -126,10 +144,11 @@ export default function CalendarPageClient() {
             })
 
             // Find workout for this day - check both day.workout and workout_plan.days
-            const workoutForDay = day.workout || workoutDays.find((w: any) => w.day === day.day)
+            const workoutDayIndex = ((planDayIndex % workoutDays.length) + workoutDays.length) % workoutDays.length
+            const workoutForDay = day.workout || workoutDays[workoutDayIndex]
 
             const workout: WorkoutItem | null = workoutForDay ? {
-                id: `wk-${day.day}`,
+                id: `wk-${planDayIndex}`,
                 name: workoutForDay.focus || workoutForDay.name || "Treino do Dia",
                 duration: `${workoutForDay.duration || 45} min`,
                 exercises: (workoutForDay.exercises || []).map((e: any) => ({
@@ -140,7 +159,7 @@ export default function CalendarPageClient() {
             } : null
 
             planMap[dateKey] = { meals, workout }
-        })
+        }
 
         return planMap
     }
