@@ -1,0 +1,1344 @@
+{
+  "daily_calories": 2300,
+  "daily_macros": {
+    "protein": 150,
+    "carbs": 230,
+    "fat": 87
+  },
+  "days": [
+    {
+      "day": 1,
+      "date_name": "Segunda-feira",
+      "total_calories": 2300,
+      "meals": [
+        {
+          "time": "07:00",
+          "name": "Café da manhã",
+          "foods": [
+            {
+              "name": "Aveia (50 g)",
+              "quantity": "50 g",
+              "calories": 190
+            },
+            {
+              "name": "Banana média",
+              "quantity": "1 unidade",
+              "calories": 100
+            },
+            {
+              "name": "Whey protein lactose-free (1 scoop)",
+              "quantity": "25 g",
+              "calories": 110
+            },
+            {
+              "name": "Manteiga de amêndoa (10 g)",
+              "quantity": "10 g",
+              "calories": 60
+            }
+          ],
+          "macros": {
+            "calories": 460,
+            "protein": 30,
+            "carbs": 46,
+            "fat": 17
+          }
+        },
+        {
+          "time": "10:00",
+          "name": "Lanche da manhã",
+          "foods": [
+            {
+              "name": "Iogurte grego lactose-free (150 g)",
+              "quantity": "150 g",
+              "calories": 110
+            },
+            {
+              "name": "Maçã média",
+              "quantity": "1 unidade",
+              "calories": 95
+            },
+            {
+              "name": "Amêndoas (10 unidades)",
+              "quantity": "10 unidades",
+              "calories": 25
+            }
+          ],
+          "macros": {
+            "calories": 230,
+            "protein": 15,
+            "carbs": 23,
+            "fat": 9
+          }
+        },
+        {
+          "time": "13:00",
+          "name": "Almoço",
+          "foods": [
+            {
+              "name": "Peito de frango grelhado",
+              "quantity": "150 g",
+              "calories": 250
+            },
+            {
+              "name": "Arroz branco cozido",
+              "quantity": "180 g",
+              "calories": 240
+            },
+            {
+              "name": "Mix de legumes cozidos (brócolis, cenoura, abobrinha)",
+              "quantity": "150 g",
+              "calories": 70
+            },
+            {
+              "name": "Azeite de oliva (1 colher de sopa)",
+              "quantity": "1 tbsp",
+              "calories": 130
+            }
+          ],
+          "macros": {
+            "calories": 690,
+            "protein": 45,
+            "carbs": 69,
+            "fat": 26
+          }
+        },
+        {
+          "time": "16:00",
+          "name": "Lanche da tarde",
+          "foods": [
+            {
+              "name": "Shake proteína lactose-free (1 scoop)",
+              "quantity": "25 g",
+              "calories": 110
+            },
+            {
+              "name": "Laranja média",
+              "quantity": "1 unidade",
+              "calories": 70
+            },
+            {
+              "name": "Pasta de amendoim (10 g)",
+              "quantity": "10 g",
+              "calories": 50
+            }
+          ],
+          "macros": {
+            "calories": 230,
+            "protein": 15,
+            "carbs": 23,
+            "fat": 9
+          }
+        },
+        {
+          "time": "19:30",
+          "name": "Jantar",
+          "foods": [
+            {
+              "name": "Filé de peixe assado (ex: tilápia/salmonete)",
+              "quantity": "180 g",
+              "calories": 220
+            },
+            {
+              "name": "Arroz integral cozido",
+              "quantity": "150 g",
+              "calories": 165
+            },
+            {
+              "name": "Salada verde (alface, rúcula, tomate) com azeite",
+              "quantity": "150 g + 1 tbsp azeite",
+              "calories": 305
+            }
+          ],
+          "macros": {
+            "calories": 690,
+            "protein": 45,
+            "carbs": 69,
+            "fat": 26
+          }
+        }
+      ]
+    },
+    {
+      "day": 2,
+      "date_name": "Terça-feira",
+      "total_calories": 2300,
+      "meals": [
+        {
+          "time": "07:00",
+          "name": "Café da manhã",
+          "foods": [
+            {
+              "name": "Ovos mexidos (2 unidades)",
+              "quantity": "2 unidades",
+              "calories": 140
+            },
+            {
+              "name": "Pão integral (2 fatias)",
+              "quantity": "2 fatias",
+              "calories": 160
+            },
+            {
+              "name": "Abacate (30 g)",
+              "quantity": "30 g",
+              "calories": 60
+            },
+            {
+              "name": "Mamão pequeno",
+              "quantity": "1 unidade",
+              "calories": 100
+            }
+          ],
+          "macros": {
+            "calories": 460,
+            "protein": 30,
+            "carbs": 46,
+            "fat": 17
+          }
+        },
+        {
+          "time": "10:00",
+          "name": "Lanche da manhã",
+          "foods": [
+            {
+              "name": "Iogurte lactose-free (150 g)",
+              "quantity": "150 g",
+              "calories": 110
+            },
+            {
+              "name": "Pera média",
+              "quantity": "1 unidade",
+              "calories": 90
+            },
+            {
+              "name": "Castanhas de caju (10 g)",
+              "quantity": "10 g",
+              "calories": 30
+            }
+          ],
+          "macros": {
+            "calories": 230,
+            "protein": 15,
+            "carbs": 23,
+            "fat": 9
+          }
+        },
+        {
+          "time": "13:00",
+          "name": "Almoço",
+          "foods": [
+            {
+              "name": "Salmão grelhado",
+              "quantity": "150 g",
+              "calories": 300
+            },
+            {
+              "name": "Batata-doce cozida",
+              "quantity": "200 g",
+              "calories": 180
+            },
+            {
+              "name": "Espinafre refogado",
+              "quantity": "100 g",
+              "calories": 40
+            },
+            {
+              "name": "Azeite (1 colher de sopa)",
+              "quantity": "1 tbsp",
+              "calories": 170
+            }
+          ],
+          "macros": {
+            "calories": 690,
+            "protein": 45,
+            "carbs": 69,
+            "fat": 26
+          }
+        },
+        {
+          "time": "16:00",
+          "name": "Lanche da tarde",
+          "foods": [
+            {
+              "name": "Whey lactose-free (1 scoop)",
+              "quantity": "25 g",
+              "calories": 110
+            },
+            {
+              "name": "Banana pequena",
+              "quantity": "1 unidade",
+              "calories": 70
+            },
+            {
+              "name": "Amendoim (10 g)",
+              "quantity": "10 g",
+              "calories": 50
+            }
+          ],
+          "macros": {
+            "calories": 230,
+            "protein": 15,
+            "carbs": 23,
+            "fat": 9
+          }
+        },
+        {
+          "time": "19:30",
+          "name": "Jantar",
+          "foods": [
+            {
+              "name": "Peito de frango grelhado",
+              "quantity": "150 g",
+              "calories": 250
+            },
+            {
+              "name": "Quinoa cozida",
+              "quantity": "150 g",
+              "calories": 210
+            },
+            {
+              "name": "Mix de salada (pepino, tomate, cenoura) + azeite",
+              "quantity": "150 g + 1 tbsp",
+              "calories": 230
+            }
+          ],
+          "macros": {
+            "calories": 690,
+            "protein": 45,
+            "carbs": 69,
+            "fat": 26
+          }
+        }
+      ]
+    },
+    {
+      "day": 3,
+      "date_name": "Quarta-feira",
+      "total_calories": 2300,
+      "meals": [
+        {
+          "time": "07:00",
+          "name": "Café da manhã",
+          "foods": [
+            {
+              "name": "Panqueca de aveia (feita com 50 g aveia + 1 ovo)",
+              "quantity": "2 unidades",
+              "calories": 260
+            },
+            {
+              "name": "Morangos",
+              "quantity": "100 g",
+              "calories": 50
+            },
+            {
+              "name": "Whey lactose-free (1 scoop)",
+              "quantity": "25 g",
+              "calories": 150
+            }
+          ],
+          "macros": {
+            "calories": 460,
+            "protein": 30,
+            "carbs": 46,
+            "fat": 17
+          }
+        },
+        {
+          "time": "10:00",
+          "name": "Lanche da manhã",
+          "foods": [
+            {
+              "name": "Iogurte lactose-free (150 g)",
+              "quantity": "150 g",
+              "calories": 110
+            },
+            {
+              "name": "Kiwi",
+              "quantity": "1 unidade",
+              "calories": 60
+            },
+            {
+              "name": "Nozes (8 g)",
+              "quantity": "8 g",
+              "calories": 60
+            }
+          ],
+          "macros": {
+            "calories": 230,
+            "protein": 15,
+            "carbs": 23,
+            "fat": 9
+          }
+        },
+        {
+          "time": "13:00",
+          "name": "Almoço",
+          "foods": [
+            {
+              "name": "Strogonoff de frango light (frango 150 g)",
+              "quantity": "150 g",
+              "calories": 300
+            },
+            {
+              "name": "Arroz integral cozido",
+              "quantity": "180 g",
+              "calories": 220
+            },
+            {
+              "name": "Salada de folhas",
+              "quantity": "100 g",
+              "calories": 20
+            },
+            {
+              "name": "Azeite (1 colher de sopa)",
+              "quantity": "1 tbsp",
+              "calories": 150
+            }
+          ],
+          "macros": {
+            "calories": 690,
+            "protein": 45,
+            "carbs": 69,
+            "fat": 26
+          }
+        },
+        {
+          "time": "16:00",
+          "name": "Lanche da tarde",
+          "foods": [
+            {
+              "name": "Barra de proteína sem lactose (45 g)",
+              "quantity": "1 unidade",
+              "calories": 150
+            },
+            {
+              "name": "Maçã pequena",
+              "quantity": "1 unidade",
+              "calories": 80
+            }
+          ],
+          "macros": {
+            "calories": 230,
+            "protein": 15,
+            "carbs": 23,
+            "fat": 9
+          }
+        },
+        {
+          "time": "19:30",
+          "name": "Jantar",
+          "foods": [
+            {
+              "name": "Filé de peixe grelhado",
+              "quantity": "180 g",
+              "calories": 220
+            },
+            {
+              "name": "Purê de mandioca (sem manteiga, com azeite)",
+              "quantity": "200 g",
+              "calories": 220
+            },
+            {
+              "name": "Brócolis no vapor",
+              "quantity": "150 g",
+              "calories": 50
+            },
+            {
+              "name": "Azeite (1 colher de sopa)",
+              "quantity": "1 tbsp",
+              "calories": 200
+            }
+          ],
+          "macros": {
+            "calories": 690,
+            "protein": 45,
+            "carbs": 69,
+            "fat": 26
+          }
+        }
+      ]
+    },
+    {
+      "day": 4,
+      "date_name": "Quinta-feira",
+      "total_calories": 2300,
+      "meals": [
+        {
+          "time": "07:00",
+          "name": "Café da manhã",
+          "foods": [
+            {
+              "name": "Tapioca (50 g goma) com frango desfiado (50 g)",
+              "quantity": "1 unidade",
+              "calories": 300
+            },
+            {
+              "name": "Mamão pequeno",
+              "quantity": "1 unidade",
+              "calories": 100
+            },
+            {
+              "name": "Café preto sem açúcar",
+              "quantity": "200 ml",
+              "calories": 0
+            },
+            {
+              "name": "Castanhas (5 unidades)",
+              "quantity": "5 unidades",
+              "calories": 60
+            }
+          ],
+          "macros": {
+            "calories": 460,
+            "protein": 30,
+            "carbs": 46,
+            "fat": 17
+          }
+        },
+        {
+          "time": "10:00",
+          "name": "Lanche da manhã",
+          "foods": [
+            {
+              "name": "Iogurte lactose-free (150 g)",
+              "quantity": "150 g",
+              "calories": 110
+            },
+            {
+              "name": "Pêssego",
+              "quantity": "1 unidade",
+              "calories": 60
+            },
+            {
+              "name": "Semente de abóbora (10 g)",
+              "quantity": "10 g",
+              "calories": 60
+            }
+          ],
+          "macros": {
+            "calories": 230,
+            "protein": 15,
+            "carbs": 23,
+            "fat": 9
+          }
+        },
+        {
+          "time": "13:00",
+          "name": "Almoço",
+          "foods": [
+            {
+              "name": "Frango ao curry (peito 150 g)",
+              "quantity": "150 g",
+              "calories": 280
+            },
+            {
+              "name": "Arroz basmati cozido",
+              "quantity": "180 g",
+              "calories": 240
+            },
+            {
+              "name": "Legumes assados (berinjela, pimentão, abobrinha)",
+              "quantity": "150 g",
+              "calories": 70
+            },
+            {
+              "name": "Azeite (1 colher de sopa)",
+              "quantity": "1 tbsp",
+              "calories": 100
+            }
+          ],
+          "macros": {
+            "calories": 690,
+            "protein": 45,
+            "carbs": 69,
+            "fat": 26
+          }
+        },
+        {
+          "time": "16:00",
+          "name": "Lanche da tarde",
+          "foods": [
+            {
+              "name": "Shake proteína lactose-free (1 scoop)",
+              "quantity": "25 g",
+              "calories": 110
+            },
+            {
+              "name": "Uvas (100 g)",
+              "quantity": "100 g",
+              "calories": 70
+            },
+            {
+              "name": "Amêndoas (7 g)",
+              "quantity": "7 g",
+              "calories": 50
+            }
+          ],
+          "macros": {
+            "calories": 230,
+            "protein": 15,
+            "carbs": 23,
+            "fat": 9
+          }
+        },
+        {
+          "time": "19:30",
+          "name": "Jantar",
+          "foods": [
+            {
+              "name": "Truta grelhada",
+              "quantity": "180 g",
+              "calories": 250
+            },
+            {
+              "name": "Arroz integral",
+              "quantity": "150 g",
+              "calories": 165
+            },
+            {
+              "name": "Salada de rúcula e tomate com azeite",
+              "quantity": "150 g + 1 tbsp",
+              "calories": 275
+            }
+          ],
+          "macros": {
+            "calories": 690,
+            "protein": 45,
+            "carbs": 69,
+            "fat": 26
+          }
+        }
+      ]
+    },
+    {
+      "day": 5,
+      "date_name": "Sexta-feira",
+      "total_calories": 2300,
+      "meals": [
+        {
+          "time": "07:00",
+          "name": "Café da manhã",
+          "foods": [
+            {
+              "name": "Mingau de aveia (50 g aveia) com maçã picada",
+              "quantity": "1 porção",
+              "calories": 260
+            },
+            {
+              "name": "Claras de ovo cozidas (3 unidades)",
+              "quantity": "3 unidades",
+              "calories": 90
+            },
+            {
+              "name": "Whey lactose-free (1 scoop)",
+              "quantity": "25 g",
+              "calories": 110
+            }
+          ],
+          "macros": {
+            "calories": 460,
+            "protein": 30,
+            "carbs": 46,
+            "fat": 17
+          }
+        },
+        {
+          "time": "10:00",
+          "name": "Lanche da manhã",
+          "foods": [
+            {
+              "name": "Iogurte lactose-free (150 g)",
+              "quantity": "150 g",
+              "calories": 110
+            },
+            {
+              "name": "Tangerina",
+              "quantity": "1 unidade",
+              "calories": 60
+            },
+            {
+              "name": "Sementes de chia (10 g)",
+              "quantity": "10 g",
+              "calories": 60
+            }
+          ],
+          "macros": {
+            "calories": 230,
+            "protein": 15,
+            "carbs": 23,
+            "fat": 9
+          }
+        },
+        {
+          "time": "13:00",
+          "name": "Almoço",
+          "foods": [
+            {
+              "name": "Peito de frango grelhado",
+              "quantity": "150 g",
+              "calories": 250
+            },
+            {
+              "name": "Arroz branco",
+              "quantity": "180 g",
+              "calories": 240
+            },
+            {
+              "name": "Salada de folhas e cenoura",
+              "quantity": "150 g",
+              "calories": 50
+            },
+            {
+              "name": "Azeite (1 colher de sopa)",
+              "quantity": "1 tbsp",
+              "calories": 150
+            }
+          ],
+          "macros": {
+            "calories": 690,
+            "protein": 45,
+            "carbs": 69,
+            "fat": 26
+          }
+        },
+        {
+          "time": "16:00",
+          "name": "Lanche da tarde",
+          "foods": [
+            {
+              "name": "Barra de proteína sem lactose (45 g)",
+              "quantity": "1 unidade",
+              "calories": 150
+            },
+            {
+              "name": "Pera pequena",
+              "quantity": "1 unidade",
+              "calories": 80
+            }
+          ],
+          "macros": {
+            "calories": 230,
+            "protein": 15,
+            "carbs": 23,
+            "fat": 9
+          }
+        },
+        {
+          "time": "19:30",
+          "name": "Jantar",
+          "foods": [
+            {
+              "name": "Filet de peixe (ex: pescada) ao forno",
+              "quantity": "180 g",
+              "calories": 220
+            },
+            {
+              "name": "Arroz integral",
+              "quantity": "150 g",
+              "calories": 165
+            },
+            {
+              "name": "Mix de legumes (vapor) + azeite",
+              "quantity": "200 g + 1 tbsp",
+              "calories": 305
+            }
+          ],
+          "macros": {
+            "calories": 690,
+            "protein": 45,
+            "carbs": 69,
+            "fat": 26
+          }
+        }
+      ]
+    },
+    {
+      "day": 6,
+      "date_name": "Sábado",
+      "total_calories": 2300,
+      "meals": [
+        {
+          "time": "08:00",
+          "name": "Café da manhã",
+          "foods": [
+            {
+              "name": "Tapioca com ovo e espinafre",
+              "quantity": "1 porção",
+              "calories": 320
+            },
+            {
+              "name": "Abacaxi (100 g)",
+              "quantity": "100 g",
+              "calories": 60
+            },
+            {
+              "name": "Café preto sem açúcar",
+              "quantity": "200 ml",
+              "calories": 0
+            },
+            {
+              "name": "Amêndoas (6 g)",
+              "quantity": "6 g",
+              "calories": 80
+            }
+          ],
+          "macros": {
+            "calories": 460,
+            "protein": 30,
+            "carbs": 46,
+            "fat": 17
+          }
+        },
+        {
+          "time": "11:00",
+          "name": "Lanche da manhã",
+          "foods": [
+            {
+              "name": "Iogurte lactose-free (150 g)",
+              "quantity": "150 g",
+              "calories": 110
+            },
+            {
+              "name": "Maçã média",
+              "quantity": "1 unidade",
+              "calories": 95
+            },
+            {
+              "name": "Sementes de girassol (10 g)",
+              "quantity": "10 g",
+              "calories": 25
+            }
+          ],
+          "macros": {
+            "calories": 230,
+            "protein": 15,
+            "carbs": 23,
+            "fat": 9
+          }
+        },
+        {
+          "time": "14:00",
+          "name": "Almoço",
+          "foods": [
+            {
+              "name": "Peito de frango ao limão",
+              "quantity": "150 g",
+              "calories": 250
+            },
+            {
+              "name": "Arroz integral",
+              "quantity": "180 g",
+              "calories": 220
+            },
+            {
+              "name": "Legumes grelhados",
+              "quantity": "150 g",
+              "calories": 50
+            },
+            {
+              "name": "Azeite (1 colher de sopa)",
+              "quantity": "1 tbsp",
+              "calories": 170
+            }
+          ],
+          "macros": {
+            "calories": 690,
+            "protein": 45,
+            "carbs": 69,
+            "fat": 26
+          }
+        },
+        {
+          "time": "17:00",
+          "name": "Lanche da tarde",
+          "foods": [
+            {
+              "name": "Smoothie com whey lactose-free (1 scoop) e frutas vermelhas",
+              "quantity": "1 copo",
+              "calories": 150
+            },
+            {
+              "name": "Banana pequena",
+              "quantity": "1 unidade",
+              "calories": 80
+            }
+          ],
+          "macros": {
+            "calories": 230,
+            "protein": 15,
+            "carbs": 23,
+            "fat": 9
+          }
+        },
+        {
+          "time": "20:00",
+          "name": "Jantar",
+          "foods": [
+            {
+              "name": "Filé de peixe grelhado",
+              "quantity": "180 g",
+              "calories": 220
+            },
+            {
+              "name": "Cuscuz marroquino (100 g cozido)",
+              "quantity": "100 g",
+              "calories": 170
+            },
+            {
+              "name": "Salada de folhas com azeite",
+              "quantity": "150 g + 1 tbsp",
+              "calories": 300
+            }
+          ],
+          "macros": {
+            "calories": 690,
+            "protein": 45,
+            "carbs": 69,
+            "fat": 26
+          }
+        }
+      ]
+    },
+    {
+      "day": 7,
+      "date_name": "Domingo",
+      "total_calories": 2300,
+      "meals": [
+        {
+          "time": "08:30",
+          "name": "Café da manhã",
+          "foods": [
+            {
+              "name": "Crepioca (50 g goma + 1 ovo) com peito de peru sem lactose",
+              "quantity": "1 porção",
+              "calories": 300
+            },
+            {
+              "name": "Manga (100 g)",
+              "quantity": "100 g",
+              "calories": 60
+            },
+            {
+              "name": "Whey lactose-free (1 scoop)",
+              "quantity": "25 g",
+              "calories": 100
+            }
+          ],
+          "macros": {
+            "calories": 460,
+            "protein": 30,
+            "carbs": 46,
+            "fat": 17
+          }
+        },
+        {
+          "time": "11:00",
+          "name": "Lanche da manhã",
+          "foods": [
+            {
+              "name": "Iogurte lactose-free (150 g)",
+              "quantity": "150 g",
+              "calories": 110
+            },
+            {
+              "name": "Maçã",
+              "quantity": "1 unidade",
+              "calories": 95
+            },
+            {
+              "name": "Amêndoas (6 g)",
+              "quantity": "6 g",
+              "calories": 25
+            }
+          ],
+          "macros": {
+            "calories": 230,
+            "protein": 15,
+            "carbs": 23,
+            "fat": 9
+          }
+        },
+        {
+          "time": "14:00",
+          "name": "Almoço",
+          "foods": [
+            {
+              "name": "Moqueca leve de peixe (peixe 150 g)",
+              "quantity": "150 g",
+              "calories": 300
+            },
+            {
+              "name": "Arroz branco",
+              "quantity": "180 g",
+              "calories": 240
+            },
+            {
+              "name": "Salada de folhas (sem maionese) + azeite",
+              "quantity": "150 g + 1 tbsp",
+              "calories": 150
+            }
+          ],
+          "macros": {
+            "calories": 690,
+            "protein": 45,
+            "carbs": 69,
+            "fat": 26
+          }
+        },
+        {
+          "time": "17:00",
+          "name": "Lanche da tarde",
+          "foods": [
+            {
+              "name": "Shake proteína lactose-free (1 scoop)",
+              "quantity": "25 g",
+              "calories": 110
+            },
+            {
+              "name": "Pêssego",
+              "quantity": "1 unidade",
+              "calories": 60
+            },
+            {
+              "name": "Pasta de amendoim (10 g)",
+              "quantity": "10 g",
+              "calories": 60
+            }
+          ],
+          "macros": {
+            "calories": 230,
+            "protein": 15,
+            "carbs": 23,
+            "fat": 9
+          }
+        },
+        {
+          "time": "20:00",
+          "name": "Jantar",
+          "foods": [
+            {
+              "name": "Peito de frango assado",
+              "quantity": "150 g",
+              "calories": 250
+            },
+            {
+              "name": "Arroz integral",
+              "quantity": "150 g",
+              "calories": 165
+            },
+            {
+              "name": "Mix de legumes cozidos + azeite",
+              "quantity": "200 g + 1 tbsp",
+              "calories": 275
+            }
+          ],
+          "macros": {
+            "calories": 690,
+            "protein": 45,
+            "carbs": 69,
+            "fat": 26
+          }
+        }
+      ]
+    }
+  ],
+  "workout_plan": {
+    "days": [
+      {
+        "day": 1,
+        "name": "Treino A - Peito, Ombro e Tríceps (Push)",
+        "duration": 60,
+        "exercises": [
+          {
+            "name": "Aquecimento (5-10 min bike ou corrida leve)",
+            "sets": 1,
+            "reps": "5-10 min",
+            "rest": "—"
+          },
+          {
+            "name": "Supino reto com barra",
+            "sets": 4,
+            "reps": "8-12",
+            "rest": "60-90s"
+          },
+          {
+            "name": "Supino inclinado com halteres",
+            "sets": 3,
+            "reps": "8-12",
+            "rest": "60-90s"
+          },
+          {
+            "name": "Desenvolvimento com halteres (ombro)",
+            "sets": 3,
+            "reps": "8-12",
+            "rest": "60s"
+          },
+          {
+            "name": "Crucifixo no banco",
+            "sets": 3,
+            "reps": "10-12",
+            "rest": "45-60s"
+          },
+          {
+            "name": "Tríceps pulley (corda)",
+            "sets": 3,
+            "reps": "10-15",
+            "rest": "45-60s"
+          },
+          {
+            "name": "Mergulho em banco (peso corporal)",
+            "sets": 2,
+            "reps": "12-15",
+            "rest": "45s"
+          },
+          {
+            "name": "Cardio leve (opcional 10 min) ou alongamento",
+            "sets": 1,
+            "reps": "10 min",
+            "rest": "—"
+          }
+        ]
+      },
+      {
+        "day": 2,
+        "name": "Treino B - Pernas e Core",
+        "duration": 60,
+        "exercises": [
+          {
+            "name": "Aquecimento dinâmico (5-10 min)",
+            "sets": 1,
+            "reps": "5-10 min",
+            "rest": "—"
+          },
+          {
+            "name": "Agachamento com barra",
+            "sets": 4,
+            "reps": "8-12",
+            "rest": "90s"
+          },
+          {
+            "name": "Leg press",
+            "sets": 3,
+            "reps": "10-12",
+            "rest": "60-90s"
+          },
+          {
+            "name": "Stiff com halteres",
+            "sets": 3,
+            "reps": "8-12",
+            "rest": "60-90s"
+          },
+          {
+            "name": "Avanço andando (walking lunges)",
+            "sets": 3,
+            "reps": "10 passos/ perna",
+            "rest": "60s"
+          },
+          {
+            "name": "Elevação de panturrilha em pé",
+            "sets": 3,
+            "reps": "12-15",
+            "rest": "45s"
+          },
+          {
+            "name": "Prancha (core)",
+            "sets": 3,
+            "reps": "45-60s",
+            "rest": "45s"
+          },
+          {
+            "name": "Abdominais bicicleta",
+            "sets": 3,
+            "reps": "20",
+            "rest": "30s"
+          }
+        ]
+      },
+      {
+        "day": 3,
+        "name": "Treino C - Costas e Bíceps (Pull)",
+        "duration": 60,
+        "exercises": [
+          {
+            "name": "Aquecimento (remo leve 5-10 min)",
+            "sets": 1,
+            "reps": "5-10 min",
+            "rest": "—"
+          },
+          {
+            "name": "Puxada na barra fixa/pulldown",
+            "sets": 4,
+            "reps": "8-12",
+            "rest": "60-90s"
+          },
+          {
+            "name": "Remada curvada com barra",
+            "sets": 3,
+            "reps": "8-12",
+            "rest": "60-90s"
+          },
+          {
+            "name": "Remada unilateral com haltere",
+            "sets": 3,
+            "reps": "10-12",
+            "rest": "60s"
+          },
+          {
+            "name": "Rosca direta com barra",
+            "sets": 3,
+            "reps": "8-12",
+            "rest": "60s"
+          },
+          {
+            "name": "Rosca martelo",
+            "sets": 3,
+            "reps": "10-12",
+            "rest": "45-60s"
+          },
+          {
+            "name": "Face pull (rear delts/upper back)",
+            "sets": 3,
+            "reps": "12-15",
+            "rest": "45s"
+          },
+          {
+            "name": "Cardio intervalado leve (opcional 10 min bike/esteira)",
+            "sets": 1,
+            "reps": "10 min",
+            "rest": "—"
+          }
+        ]
+      },
+      {
+        "day": 4,
+        "name": "Treino D - Full Body + Condicionamento",
+        "duration": 60,
+        "exercises": [
+          {
+            "name": "Aquecimento (5-10 min)",
+            "sets": 1,
+            "reps": "5-10 min",
+            "rest": "—"
+          },
+          {
+            "name": "Levantamento terra romeno",
+            "sets": 3,
+            "reps": "8-10",
+            "rest": "90s"
+          },
+          {
+            "name": "Supino inclinado com halteres",
+            "sets": 3,
+            "reps": "8-10",
+            "rest": "60s"
+          },
+          {
+            "name": "Remada baixa",
+            "sets": 3,
+            "reps": "8-12",
+            "rest": "60s"
+          },
+          {
+            "name": "Agachamento frontal (ou goblet)",
+            "sets": 3,
+            "reps": "10-12",
+            "rest": "60-90s"
+          },
+          {
+            "name": "Kettlebell swing (condicionamento)",
+            "sets": 3,
+            "reps": "15-20",
+            "rest": "45s"
+          },
+          {
+            "name": "Circuito core (prancha 45s + russian twist 20 + leg raises 12) x3",
+            "sets": 3,
+            "reps": "—",
+            "rest": "60s"
+          }
+        ]
+      }
+    ]
+  },
+  "shopping_list": [
+    {
+      "category": "Proteínas",
+      "items": [
+        "Peito de frango: 3.5 kg",
+        "Peixes (tilápia/salmão/truta): 1.8 kg",
+        "Ovos: 18 unidades",
+        "Whey protein lactose-free: 1 pote (500 g)",
+        "Iogurte grego lactose-free: 2 kg",
+        "Peito de peru/fiambre sem lactose (opcional): 300 g"
+      ]
+    },
+    {
+      "category": "Grãos e Cereais",
+      "items": [
+        "Arroz branco: 2 kg",
+        "Arroz integral: 1.5 kg",
+        "Aveia em flocos: 500 g",
+        "Quinoa: 500 g",
+        "Pão integral: 1 unidade (ou pacote)"
+      ]
+    },
+    {
+      "category": "Tubérculos e Féculas",
+      "items": [
+        "Batata-doce: 1.5 kg",
+        "Mandioca ou aipim: 1 kg",
+        "Cuscuz/quinoa/masas diversas: 500 g"
+      ]
+    },
+    {
+      "category": "Frutas",
+      "items": [
+        "Banana: 12 unidades",
+        "Maçã: 7 unidades",
+        "Laranja: 7 unidades",
+        "Manga/abacaxi/mamão e frutas vermelhas (variação): 2 kg"
+      ]
+    },
+    {
+      "category": "Vegetais",
+      "items": [
+        "Brócolis: 1 kg",
+        "Cenoura: 1 kg",
+        "Abobrinha: 1 kg",
+        "Alface, rúcula, espinafre: 2-3 maços cada",
+        "Tomate, pepino, pimentão: 1.5 kg"
+      ]
+    },
+    {
+      "category": "Oleos e Gorduras",
+      "items": [
+        "Azeite de oliva extra virgem: 500 ml",
+        "Manteiga de amendoim/almêndoa: 250 g",
+        "Nozes/amêndoas/castanhas: 300 g"
+      ]
+    },
+    {
+      "category": "Leguminosas e Outros",
+      "items": [
+        "Feijão seco ou cozido: 1 kg",
+        "Lentilha/grão-de-bico: 500 g",
+        "Sementes (chia/girassol/abóbora): 200 g",
+        "Barra de proteína sem lactose: 4-7 unidades (opcional)"
+      ]
+    },
+    {
+      "category": "Temperos e Extras",
+      "items": [
+        "Sal, pimenta, alho, cebola, curry, ervas frescas",
+        "Vinagre balsâmico ou limão",
+        "Café"
+      ]
+    }
+  ],
+  "tips": [
+    "Hidratação: aumente ingestão para 2,5–3 L/dia. Comece o dia com 300–500 ml água e leve garrafa ao longo do dia.",
+    "Proteína elevada: mantenha ~150 g proteína/dia (≈2 g/kg do peso desejado) para preservar massa magra durante o corte.",
+    "Progressão no treino: como intermediário foque em aumento gradual de carga/volume; registre cargas e aumente 2,5–5% quando completar o topo de repetições.",
+    "Sono e estresse: mantenha 7–8 h de sono; práticas de redução de estresse (meditação 5–10 min, caminhadas) ajudam na recuperação e controle do apetite.",
+    "Reavaliação: pese-se e tire medidas a cada 2 semanas; se após 4 semanas a perda for <0,25 kg/semana, reduza 100–150 kcal ou aumente 10–15 min de cardio 2x/semana."
+  ]
+}

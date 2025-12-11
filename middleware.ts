@@ -1,54 +1,30 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 
-/**
- * Middleware to detect user language and currency
- * Sets cookies for site_lang and site_currency
- */
-export function middleware(req: NextRequest) {
-    const acceptLanguage = req.headers.get("accept-language") || "";
-    const languages = acceptLanguage
-        .split(",")
-        .map((l) => l.split(";")[0].trim());
+import { stackServerApp } from "@/stack"
+import { NextResponse, NextRequest } from "next/server"
 
-    // Detect language
-    let lang = "en";
-    if (languages.find((l) => l.startsWith("pt"))) {
-        lang = "pt-BR";
+export async function middleware(req: NextRequest) {
+    // Stack middleware usually handles session refresh automatically if using stackServerApp.urls
+    // API is accessible via stackServerApp.urls
+
+    const user = await stackServerApp.getUser()
+    const isLoggedIn = !!user
+
+    const isOnDashboard = req.nextUrl.pathname.startsWith("/dashboard")
+    const isOnAuth = req.nextUrl.pathname.startsWith("/handler") // Stack auth routes usually under /handler or handled by SDK components. 
+    // Custom login page at /login? 
+    // For now, let's assume we use Stack's prebuilt UI or redirection.
+    // If user provided keys, they likely have the hosted UI enabled or local handlers.
+
+    if (isOnDashboard && !isLoggedIn) {
+        const redirectUrl = req.nextUrl.clone()
+        redirectUrl.pathname = "/login" // Custom login route
+        redirectUrl.searchParams.set("redirect_url", req.nextUrl.href)
+        return NextResponse.redirect(redirectUrl)
     }
 
-    // Detect currency from geo location (Vercel provides req.geo)
-    const country = req.geo?.country || "";
-    let currency = "USD";
-
-    // Brazil uses BRL
-    if (country === "BR" || lang === "pt-BR") {
-        currency = "BRL";
-    }
-
-    const response = NextResponse.next();
-
-    // Set cookies for language and currency
-    response.cookies.set("site_lang", lang, {
-        path: "/",
-        maxAge: 60 * 60 * 24 * 365, // 1 year
-    });
-
-    response.cookies.set("site_currency", currency, {
-        path: "/",
-        maxAge: 60 * 60 * 24 * 365, // 1 year
-    });
-
-    return response;
+    return NextResponse.next()
 }
 
 export const config = {
-    matcher: [
-        "/",
-        "/quiz",
-        "/preview",
-        "/checkout/:path*",
-        "/success",
-        "/cancel",
-    ],
-};
+    matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+}

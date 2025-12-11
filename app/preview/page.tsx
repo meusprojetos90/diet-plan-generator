@@ -47,8 +47,14 @@ export default function PreviewPage() {
           customerName: intake.name,
           currency,
           intakeId: "temp-" + Date.now(), // In production, save to DB first
+          intake: intake,
+          preview: preview,
         }),
       });
+
+      if (!response.ok) {
+        throw new Error("Failed to create checkout session");
+      }
 
       const { url } = await response.json();
       window.location.href = url; // Redirect to Stripe

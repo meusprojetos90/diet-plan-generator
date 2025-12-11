@@ -34,3 +34,17 @@
 - **Micro-interactions**: Hover effects, smooth transitions
 - **Responsive**: Mobile-first approach
 - **Accessibility**: High contrast, readable fonts
+
+
+Recomendação objetiva (minha opinião)
+Se quiser a melhor qualidade dentro dos gratuitos:
+
+gpt-5-mini
+
+Se quiser equilíbrio entre qualidade e uso alto em automações:
+
+gpt-4o-mini (o que você já usa)
+
+Se quiser só economizar:
+
+gpt-5-nano (mas não recomendo para nutricao/treino)

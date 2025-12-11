@@ -3,34 +3,30 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+interface Plan {
+  id: string;
+  name: string;
+  days: number;
+  price_brl: number;
+  price_usd: number;
+  original_price_brl: number | null;
+  original_price_usd: number | null;
+  is_popular: boolean;
+  features: string[];
+}
+
 export default function Home() {
-  const [locale, setLocale] = useState<"pt-BR" | "en">("pt-BR");
-  const [currency, setCurrency] = useState<"BRL" | "USD">("BRL");
   const [mounted, setMounted] = useState(false);
-  const [currentFeature, setCurrentFeature] = useState(0);
+  const [plans, setPlans] = useState<Plan[]>([]);
 
   useEffect(() => {
     setMounted(true);
-    const browserLang = navigator.language;
-    if (browserLang.startsWith("pt")) {
-      setLocale("pt-BR");
-      setCurrency("BRL");
-    } else {
-      setLocale("en");
-      setCurrency("USD");
-    }
+    // Fetch plans from database
+    fetch('/api/plans')
+      .then(res => res.json())
+      .then(data => setPlans(data.plans || []))
+      .catch(() => setPlans([]));
   }, []);
-
-  // Auto-rotate features every 5 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentFeature((prev) => (prev + 1) % 4);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const t = translations[locale];
-  const prices = pricingPlans[currency];
 
   if (!mounted) return null;
 
@@ -42,34 +38,61 @@ export default function Home() {
           <div className="gradient-orb orb-1"></div>
           <div className="gradient-orb orb-2"></div>
           <div className="gradient-orb orb-3"></div>
+          <div className="floating-icons">
+            <span className="float-icon">🥗</span>
+            <span className="float-icon">🏋️</span>
+            <span className="float-icon">💪</span>
+            <span className="float-icon">🥑</span>
+            <span className="float-icon">🎯</span>
+          </div>
         </div>
 
         <div className="container">
-          <div className="hero-content animate-fade-in">
-            <h1 className="hero-title">{t.hero.title}</h1>
+          <div className="hero-content">
+            <div className="hero-badge">✨ Transforme seu corpo e mente</div>
+            <h1 className="hero-title">
+              Seu Plano de <span className="gradient-text">Dieta + Treino</span> Personalizado com IA
+            </h1>
 
-            <p className="hero-subtitle">{t.hero.subtitle}</p>
+            <p className="hero-subtitle">
+              Em apenas 2 minutos, receba um plano completo de alimentação e exercícios criado especialmente para você.
+              <strong> Resultados garantidos ou seu dinheiro de volta!</strong>
+            </p>
+
+            <div className="hero-stats">
+              <div className="stat">
+                <span className="stat-number">12.500+</span>
+                <span className="stat-label">Clientes Satisfeitos</span>
+              </div>
+              <div className="stat-divider"></div>
+              <div className="stat">
+                <span className="stat-number">4.9★</span>
+                <span className="stat-label">Avaliação Média</span>
+              </div>
+              <div className="stat-divider"></div>
+              <div className="stat">
+                <span className="stat-number">-5kg</span>
+                <span className="stat-label">Média em 30 dias</span>
+              </div>
+            </div>
 
             <div className="gender-selection">
-              <p className="gender-label">{t.hero.genderLabel}</p>
+              <p className="gender-label">👇 Selecione seu gênero para começar</p>
               <div className="gender-cards">
                 <Link href="/quiz?gender=male" className="gender-card">
                   <div className="gender-icon">👨</div>
-                  <span>{t.hero.male}</span>
+                  <span>Masculino</span>
+                  <div className="card-arrow">→</div>
                 </Link>
                 <Link href="/quiz?gender=female" className="gender-card">
                   <div className="gender-icon">👩</div>
-                  <span>{t.hero.female}</span>
+                  <span>Feminino</span>
+                  <div className="card-arrow">→</div>
                 </Link>
               </div>
             </div>
 
-            <div className="hero-support">
-              <p>{t.hero.question}</p>
-              <a href="mailto:support@example.com" className="support-link">
-                {t.hero.contactSupport}
-              </a>
-            </div>
+            <p className="hero-trust">🔒 Seus dados estão seguros • 💳 Pagamento seguro • ✅ Garantia de 7 dias</p>
           </div>
         </div>
       </section>
@@ -78,61 +101,105 @@ export default function Home() {
       <section className="what-you-get">
         <div className="container">
           <div className="section-header">
-            <h2 className="section-title">{t.whatYouGet.title}</h2>
+            <span className="section-badge">📦 INCLUSO NO SEU PLANO</span>
+            <h2 className="section-title">O Que Você Vai Receber</h2>
+            <p className="section-subtitle">Um pacote completo para transformar seu corpo e sua saúde</p>
           </div>
 
-          <div className="features-carousel">
-            <div className="carousel-track" style={{ transform: `translateX(-${currentFeature * 100}%)` }}>
-              {t.whatYouGet.items.map((feature, index) => (
-                <div key={index} className="carousel-slide">
-                  <div className="feature-showcase">
-                    <div className="feature-icon-large">{feature.icon}</div>
-                    <h3>{feature.title}</h3>
-                    <p>{feature.description}</p>
-                  </div>
-                </div>
-              ))}
+          <div className="benefits-grid">
+            <div className="benefit-card highlight">
+              <div className="benefit-icon">📋</div>
+              <h3>Plano Alimentar Completo</h3>
+              <ul className="benefit-list">
+                <li>✓ 7 a 90 dias de refeições planejadas</li>
+                <li>✓ Café, almoço, jantar e lanches</li>
+                <li>✓ Receitas detalhadas passo a passo</li>
+                <li>✓ Cálculo de calorias e macros</li>
+                <li>✓ Adaptado às suas preferências</li>
+              </ul>
             </div>
-            <div className="carousel-dots">
-              {t.whatYouGet.items.map((_, index) => (
-                <button
-                  key={index}
-                  className={`dot ${currentFeature === index ? "active" : ""}`}
-                  onClick={() => setCurrentFeature(index)}
-                  aria-label={`Go to slide ${index + 1}`}
-                />
-              ))}
+
+            <div className="benefit-card">
+              <div className="benefit-icon">🏋️</div>
+              <h3>Treinos Personalizados</h3>
+              <ul className="benefit-list">
+                <li>✓ Exercícios para seu nível</li>
+                <li>✓ Treinos em casa ou academia</li>
+                <li>✓ Vídeos explicativos</li>
+                <li>✓ Timer interativo guiado</li>
+                <li>✓ Música ambiente motivacional</li>
+              </ul>
+            </div>
+
+            <div className="benefit-card">
+              <div className="benefit-icon">🛒</div>
+              <h3>Lista de Compras</h3>
+              <ul className="benefit-list">
+                <li>✓ Organizada por categoria</li>
+                <li>✓ Quantidades exatas</li>
+                <li>✓ Economize no mercado</li>
+                <li>✓ Atualizada semanalmente</li>
+              </ul>
+            </div>
+
+            <div className="benefit-card">
+              <div className="benefit-icon">📱</div>
+              <h3>Área do Cliente</h3>
+              <ul className="benefit-list">
+                <li>✓ Acesso via celular ou PC</li>
+                <li>✓ Calendário interativo</li>
+                <li>✓ Acompanhamento de peso</li>
+                <li>✓ Marcar refeições feitas</li>
+              </ul>
+            </div>
+
+            <div className="benefit-card">
+              <div className="benefit-icon"></div>
+              <h3>Suporte 24/7</h3>
+              <ul className="benefit-list">
+                <li>✓ Atendimento via email</li>
+                <li>✓ Tire suas dúvidas</li>
+                <li>✓ Ajustes no plano</li>
+                <li>✓ Resposta rápida</li>
+              </ul>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="testimonials">
+      {/* How It Works */}
+      <section className="how-it-works">
         <div className="container">
           <div className="section-header">
-            <h2 className="section-title">{t.testimonials.title}</h2>
+            <span className="section-badge">🚀 SIMPLES E RÁPIDO</span>
+            <h2 className="section-title">Como Funciona</h2>
           </div>
 
-          <div className="testimonials-grid">
-            {t.testimonials.items.map((testimonial, index) => (
-              <div key={index} className="testimonial-card">
-                <div className="testimonial-header">
-                  <div className="testimonial-avatar">
-                    {testimonial.name.charAt(0)}
-                  </div>
-                  <div className="testimonial-info">
-                    <h4>{testimonial.name}</h4>
-                    <div className="stars">
-                      {[...Array(5)].map((_, i) => (
-                        <span key={i} className="star">⭐</span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                <p className="testimonial-text">{testimonial.review}</p>
-              </div>
-            ))}
+          <div className="steps-grid">
+            <div className="step-card">
+              <div className="step-number">1</div>
+              <div className="step-icon">📝</div>
+              <h3>Responda o Quiz</h3>
+              <p>Conte-nos sobre seus objetivos, preferências alimentares e rotina. Leva apenas 2 minutos!</p>
+            </div>
+
+            <div className="step-arrow">→</div>
+
+            <div className="step-card">
+              <div className="step-number">2</div>
+              <div className="step-icon">🤖</div>
+              <h3>IA Cria Seu Plano</h3>
+              <p>Nossa inteligência artificial analisa suas informações e cria um plano 100% personalizado.</p>
+            </div>
+
+            <div className="step-arrow">→</div>
+
+            <div className="step-card">
+              <div className="step-number">3</div>
+              <div className="step-icon">🎉</div>
+              <h3>Comece a Transformação</h3>
+              <p>Acesse seu dashboard, siga o plano e veja os resultados aparecerem rapidamente!</p>
+            </div>
           </div>
         </div>
       </section>
@@ -140,27 +207,109 @@ export default function Home() {
       {/* Results Section */}
       <section className="results">
         <div className="container">
-          <div className="results-content">
-            <div className="results-badge">{t.results.badge}</div>
-            <blockquote className="results-quote">
-              "{t.results.quote}"
-            </blockquote>
+          <div className="section-header light">
+            <span className="section-badge light">💎 RESULTADOS REAIS</span>
+            <h2 className="section-title light">Transformações Inspiradoras</h2>
+          </div>
 
-            <div className="gender-selection">
-              <p className="gender-label">{t.results.genderLabel}</p>
-              <div className="gender-cards">
-                <Link href="/quiz?gender=male" className="gender-card">
-                  <div className="gender-icon">👨</div>
-                  <span>{t.results.male}</span>
-                </Link>
-                <Link href="/quiz?gender=female" className="gender-card">
-                  <div className="gender-icon">👩</div>
-                  <span>{t.results.female}</span>
-                </Link>
+          <div className="results-stats">
+            <div className="result-stat">
+              <div className="result-number">94%</div>
+              <p>dos clientes atingem sua meta de peso</p>
+            </div>
+            <div className="result-stat">
+              <div className="result-number">3-5kg</div>
+              <p>de perda média nas primeiras 2 semanas</p>
+            </div>
+            <div className="result-stat">
+              <div className="result-number">87%</div>
+              <p>mantêm o peso após 6 meses</p>
+            </div>
+          </div>
+
+          <blockquote className="results-quote">
+            "Em 3 meses eu perdi 12kg e mudei completamente minha relação com a comida.
+            O plano é fácil de seguir e as receitas são deliciosas!"
+            <cite>— Maria S., 32 anos</cite>
+          </blockquote>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="testimonials">
+        <div className="container">
+          <div className="section-header">
+            <span className="section-badge">⭐ AVALIAÇÕES</span>
+            <h2 className="section-title">O Que Dizem Nossos Clientes</h2>
+          </div>
+
+          <div className="testimonials-grid">
+            <div className="testimonial-card">
+              <div className="testimonial-header">
+                <div className="testimonial-avatar">K</div>
+                <div className="testimonial-info">
+                  <h4>Katie Barr</h4>
+                  <div className="stars">⭐⭐⭐⭐⭐</div>
+                </div>
               </div>
+              <p className="testimonial-text">"Excelente! Perdi 8kg em 2 meses seguindo o plano. As receitas são fáceis e saborosas. Muito recomendado!"</p>
+              <div className="testimonial-result">-8kg em 60 dias</div>
             </div>
 
-            <p className="results-cta-text">{t.results.ctaText}</p>
+            <div className="testimonial-card">
+              <div className="testimonial-header">
+                <div className="testimonial-avatar">M</div>
+                <div className="testimonial-info">
+                  <h4>Marcus Hart</h4>
+                  <div className="stars">⭐⭐⭐⭐⭐</div>
+                </div>
+              </div>
+              <p className="testimonial-text">"O treino guiado é incrível! A música e o timer me mantêm motivado. Já perdi 6kg e ganhei massa muscular."</p>
+              <div className="testimonial-result">-6kg + músculo</div>
+            </div>
+
+            <div className="testimonial-card">
+              <div className="testimonial-header">
+                <div className="testimonial-avatar">D</div>
+                <div className="testimonial-info">
+                  <h4>Diane Castillo</h4>
+                  <div className="stars">⭐⭐⭐⭐⭐</div>
+                </div>
+              </div>
+              <p className="testimonial-text">"Mudou completamente minha relação com a comida. Aprendi a comer de forma saudável e sustentável. Recomendo!"</p>
+              <div className="testimonial-result">-10kg em 90 dias</div>
+            </div>
+
+            <div className="testimonial-card">
+              <div className="testimonial-header">
+                <div className="testimonial-avatar">P</div>
+                <div className="testimonial-info">
+                  <h4>Pedro Silva</h4>
+                  <div className="stars">⭐⭐⭐⭐⭐</div>
+                </div>
+              </div>
+              <p className="testimonial-text">"Finalmente algo que funciona! O suporte é excelente e o plano é super personalizado. Valeu cada centavo!"</p>
+              <div className="testimonial-result">-15kg em 4 meses</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Guarantee Section */}
+      <section className="guarantee">
+        <div className="container">
+          <div className="guarantee-card">
+            <div className="guarantee-icon">🛡️</div>
+            <h2>Garantia de 7 Dias</h2>
+            <p>
+              Se você não estiver 100% satisfeito com o seu plano, devolvemos seu dinheiro.
+              Sem perguntas, sem burocracia. Seu investimento está protegido!
+            </p>
+            <div className="guarantee-badges">
+              <span>✓ Reembolso Total</span>
+              <span>✓ Sem Perguntas</span>
+              <span>✓ Processo Rápido</span>
+            </div>
           </div>
         </div>
       </section>
@@ -169,72 +318,86 @@ export default function Home() {
       <section className="pricing">
         <div className="container">
           <div className="section-header">
-            <span className="section-badge">{t.pricing.badge}</span>
-            <h2 className="section-title">{t.pricing.title}</h2>
-            <p className="section-subtitle">{t.pricing.subtitle}</p>
+            <span className="section-badge">💰 INVESTIMENTO</span>
+            <h2 className="section-title">Escolha Seu Plano</h2>
+            <p className="section-subtitle">Quanto mais dias, maior o desconto! Acesso imediato após pagamento.</p>
           </div>
 
           <div className="pricing-grid">
-            {prices.map((plan, index) => (
-              <div
-                key={plan.days}
-                className={`pricing-card ${index === 2 ? 'popular' : ''}`}
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                {index === 2 && (
-                  <div className="popular-badge">{t.pricing.popular}</div>
-                )}
+            {plans.map((plan) => {
+              const pricePerDay = (plan.price_brl / plan.days).toFixed(2).replace('.', ',');
+              const discount = plan.original_price_brl
+                ? Math.round((1 - plan.price_brl / plan.original_price_brl) * 100)
+                : 0;
 
-                <div className="pricing-header">
-                  <h3>{plan.days} {t.pricing.days}</h3>
-                  <div className="price">
-                    <span className="currency">{currency === "BRL" ? "R$" : "$"}</span>
-                    <span className="amount">{plan.price}</span>
+              return (
+                <div key={plan.id} className={`pricing-card ${plan.is_popular ? 'popular' : ''}`}>
+                  {plan.is_popular && <div className="popular-badge">🔥 MAIS POPULAR</div>}
+                  <div className="pricing-header">
+                    <h3>{plan.days} dias</h3>
+                    <div className="price">
+                      <span className="currency">R$</span>
+                      <span className="amount">{Math.floor(plan.price_brl)}</span>
+                    </div>
+                    <div className="price-per-day">R${pricePerDay} por dia</div>
+                    {discount > 0 && <div className="discount-badge">{discount}% OFF</div>}
                   </div>
-                  <div className="price-per-day">
-                    {currency === "BRL" ? "R$" : "$"}
-                    {(plan.price / plan.days).toFixed(2)} {t.pricing.perDay}
-                  </div>
+
+                  <ul className="pricing-features">
+                    <li>✓ {plan.days} dias de plano alimentar</li>
+                    {(plan.features || []).slice(0, 5).map((feature, idx) => (
+                      <li key={idx}>✓ {feature}</li>
+                    ))}
+                  </ul>
+
+                  <Link href="/quiz" className={`pricing-button ${plan.is_popular ? 'primary' : ''}`}>
+                    Começar Agora →
+                  </Link>
                 </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
-                <ul className="pricing-features">
-                  <li>
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                      <path d="M16.6667 5L7.50004 14.1667L3.33337 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    {plan.days} {t.pricing.features.days}
-                  </li>
-                  <li>
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                      <path d="M16.6667 5L7.50004 14.1667L3.33337 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    {t.pricing.features.recipes}
-                  </li>
-                  <li>
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                      <path d="M16.6667 5L7.50004 14.1667L3.33337 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    {t.pricing.features.shopping}
-                  </li>
-                  <li>
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                      <path d="M16.6667 5L7.50004 14.1667L3.33337 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    {t.pricing.features.macros}
-                  </li>
-                  <li>
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                      <path d="M16.6667 5L7.50004 14.1667L3.33337 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    {t.pricing.features.pdf}
-                  </li>
-                </ul>
+      {/* FAQ Section */}
+      <section className="faq">
+        <div className="container">
+          <div className="section-header">
+            <span className="section-badge">❓ DÚVIDAS</span>
+            <h2 className="section-title">Perguntas Frequentes</h2>
+          </div>
 
-                <Link href="/quiz" className="pricing-button">
-                  {t.pricing.cta}
-                </Link>
-              </div>
-            ))}
+          <div className="faq-grid">
+            <div className="faq-item">
+              <h4>Como recebo meu plano?</h4>
+              <p>Após o pagamento, você recebe acesso imediato ao seu dashboard pessoal com todo o plano. Também enviamos um PDF por email.</p>
+            </div>
+
+            <div className="faq-item">
+              <h4>O plano é realmente personalizado?</h4>
+              <p>Sim! Nossa IA analisa suas respostas do quiz (peso, altura, objetivos, restrições alimentares) e cria um plano único para você.</p>
+            </div>
+
+            <div className="faq-item">
+              <h4>Posso acessar pelo celular?</h4>
+              <p>Sim, nosso dashboard é 100% responsivo. Acesse de qualquer dispositivo, a qualquer hora.</p>
+            </div>
+
+            <div className="faq-item">
+              <h4>E se eu não gostar?</h4>
+              <p>Temos garantia de 7 dias. Se não estiver satisfeito, devolvemos 100% do seu dinheiro, sem perguntas.</p>
+            </div>
+
+            <div className="faq-item">
+              <h4>Preciso de equipamentos para os treinos?</h4>
+              <p>Não! Temos opção de treinos em casa sem equipamentos e também para academia. Você escolhe!</p>
+            </div>
+
+            <div className="faq-item">
+              <h4>O pagamento é seguro?</h4>
+              <p>Sim! Utilizamos processadores de pagamento certificados e criptografia de ponta. Seus dados estão 100% protegidos.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -243,22 +406,25 @@ export default function Home() {
       <section className="final-cta">
         <div className="container">
           <div className="cta-content">
-            <h2>{t.cta.title}</h2>
-            <p>{t.cta.subtitle}</p>
+            <h2>🎯 Comece Sua Transformação Agora!</h2>
+            <p>Milhares de pessoas já mudaram suas vidas. Chegou a sua vez!</p>
 
             <div className="gender-selection">
-              <p className="gender-label">{t.cta.genderLabel}</p>
               <div className="gender-cards">
                 <Link href="/quiz?gender=male" className="gender-card">
                   <div className="gender-icon">👨</div>
-                  <span>{t.cta.male}</span>
+                  <span>Masculino</span>
+                  <div className="card-arrow">→</div>
                 </Link>
                 <Link href="/quiz?gender=female" className="gender-card">
                   <div className="gender-icon">👩</div>
-                  <span>{t.cta.female}</span>
+                  <span>Feminino</span>
+                  <div className="card-arrow">→</div>
                 </Link>
               </div>
             </div>
+
+            <p className="cta-guarantee">🛡️ Garantia de 7 dias ou seu dinheiro de volta!</p>
           </div>
         </div>
       </section>
@@ -268,39 +434,36 @@ export default function Home() {
         <div className="container">
           <div className="footer-grid">
             <div className="footer-column">
-              <h4>{t.footer.product.title}</h4>
+              <h4>Produto</h4>
               <ul>
-                <li><Link href="/subscription">{t.footer.product.subscription}</Link></li>
+                <li><Link href="/quiz">Criar Meu Plano</Link></li>
+                <li><Link href="/login">Gerenciar Assinatura</Link></li>
               </ul>
             </div>
 
             <div className="footer-column">
-              <h4>{t.footer.terms.title}</h4>
+              <h4>Legal</h4>
               <ul>
-                <li><Link href="/refund-policy">{t.footer.terms.refund}</Link></li>
-                <li><Link href="/privacy-policy">{t.footer.terms.privacy}</Link></li>
-                <li><Link href="/terms-of-service">{t.footer.terms.terms}</Link></li>
-                <li><Link href="/subscription-terms">{t.footer.terms.subscriptionTerms}</Link></li>
-                <li><Link href="/cookie-policy">{t.footer.terms.cookies}</Link></li>
+                <li><Link href="/refund-policy">Política de Reembolso</Link></li>
+                <li><Link href="/privacy-policy">Política de Privacidade</Link></li>
+                <li><Link href="/terms-of-service">Termos de Serviço</Link></li>
               </ul>
             </div>
 
             <div className="footer-column">
-              <h4>{t.footer.company.title}</h4>
+              <h4>Contato</h4>
               <ul>
-                <li><Link href="/about">{t.footer.company.about}</Link></li>
-                <li><Link href="/contact">{t.footer.company.contact}</Link></li>
+                <li><a href="mailto:support@example.com">support@example.com</a></li>
               </ul>
             </div>
           </div>
 
           <div className="footer-bottom">
-            <p className="disclaimer">{t.footer.disclaimer}</p>
-            <div className="footer-contact">
-              <p>{t.footer.companyName}</p>
-              <a href="mailto:support@example.com">support@example.com</a>
-              <a href="tel:+5511999999999">+55 11 99999-9999</a>
-            </div>
+            <p className="disclaimer">
+              Este site não faz parte do website do Facebook ou do Facebook Inc.
+              Além disso, este site NÃO é endossado pelo Facebook de nenhuma forma.
+            </p>
+            <p>© 2024 Dieta Personalizada. Todos os direitos reservados.</p>
           </div>
         </div>
       </footer>
@@ -309,18 +472,19 @@ export default function Home() {
         .landing-page {
           min-height: 100vh;
           overflow-x: hidden;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         /* Hero Section */
         .hero {
           position: relative;
-          min-height: 90vh;
+          min-height: 100vh;
           display: flex;
           align-items: center;
           justify-content: center;
-          padding: 120px 20px 80px;
+          padding: 100px 20px 80px;
           overflow: hidden;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
         }
 
         .hero-background {
@@ -332,44 +496,62 @@ export default function Home() {
         .gradient-orb {
           position: absolute;
           border-radius: 50%;
-          filter: blur(80px);
-          opacity: 0.6;
-          animation: float 6s ease-in-out infinite;
+          filter: blur(100px);
+          opacity: 0.4;
+          animation: float 8s ease-in-out infinite;
         }
 
         .orb-1 {
-          width: 500px;
-          height: 500px;
-          background: radial-gradient(circle, rgba(240, 147, 251, 0.8) 0%, transparent 70%);
-          top: -10%;
+          width: 600px;
+          height: 600px;
+          background: radial-gradient(circle, #667eea 0%, transparent 70%);
+          top: -15%;
           left: -10%;
-          animation-delay: 0s;
         }
 
         .orb-2 {
-          width: 400px;
-          height: 400px;
-          background: radial-gradient(circle, rgba(79, 172, 254, 0.8) 0%, transparent 70%);
-          bottom: -10%;
+          width: 500px;
+          height: 500px;
+          background: radial-gradient(circle, #f093fb 0%, transparent 70%);
+          bottom: -15%;
           right: -10%;
-          animation-delay: 2s;
+          animation-delay: 3s;
         }
 
         .orb-3 {
-          width: 300px;
-          height: 300px;
-          background: radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, transparent 70%);
+          width: 400px;
+          height: 400px;
+          background: radial-gradient(circle, #00d9ff 0%, transparent 70%);
           top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          animation-delay: 4s;
+          left: 60%;
+          animation-delay: 5s;
         }
+
+        .floating-icons {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+        }
+
+        .float-icon {
+          position: absolute;
+          font-size: 2.5rem;
+          opacity: 0.15;
+          animation: floatIcon 10s ease-in-out infinite;
+        }
+
+        .float-icon:nth-child(1) { top: 15%; left: 10%; animation-delay: 0s; }
+        .float-icon:nth-child(2) { top: 25%; right: 15%; animation-delay: 2s; }
+        .float-icon:nth-child(3) { bottom: 30%; left: 8%; animation-delay: 4s; }
+        .float-icon:nth-child(4) { bottom: 20%; right: 10%; animation-delay: 6s; }
+        .float-icon:nth-child(5) { top: 60%; left: 50%; animation-delay: 8s; }
 
         .container {
           max-width: 1200px;
           margin: 0 auto;
           position: relative;
           z-index: 1;
+          padding: 0 20px;
         }
 
         .hero-content {
@@ -377,22 +559,72 @@ export default function Home() {
           color: white;
         }
 
-        .hero-title {
-          font-size: clamp(2.5rem, 6vw, 4rem);
-          font-weight: 800;
-          line-height: 1.1;
+        .hero-badge {
+          display: inline-block;
+          padding: 8px 20px;
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 50px;
+          font-size: 0.9rem;
           margin-bottom: 25px;
-          text-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-title {
+          font-size: clamp(2.2rem, 5vw, 3.5rem);
+          font-weight: 800;
+          line-height: 1.2;
+          margin-bottom: 25px;
+        }
+
+        .gradient-text {
+          background: linear-gradient(135deg, #00d9ff 0%, #f093fb 50%, #ff6b6b 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
         }
 
         .hero-subtitle {
-          font-size: clamp(1.1rem, 2vw, 1.3rem);
-          line-height: 1.6;
-          margin-bottom: 50px;
-          opacity: 0.95;
+          font-size: clamp(1rem, 2vw, 1.2rem);
+          line-height: 1.7;
+          margin-bottom: 40px;
+          opacity: 0.9;
           max-width: 700px;
           margin-left: auto;
           margin-right: auto;
+        }
+
+        .hero-stats {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 30px;
+          margin-bottom: 50px;
+          flex-wrap: wrap;
+        }
+
+        .stat {
+          text-align: center;
+        }
+
+        .stat-number {
+          display: block;
+          font-size: 2rem;
+          font-weight: 800;
+          background: linear-gradient(135deg, #00d9ff 0%, #f093fb 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+          font-size: 0.85rem;
+          opacity: 0.8;
+        }
+
+        .stat-divider {
+          width: 1px;
+          height: 40px;
+          background: rgba(255,255,255,0.3);
         }
 
         .gender-selection {
@@ -400,7 +632,7 @@ export default function Home() {
         }
 
         .gender-label {
-          font-size: 1.2rem;
+          font-size: 1.1rem;
           font-weight: 600;
           margin-bottom: 20px;
         }
@@ -413,25 +645,27 @@ export default function Home() {
         }
 
         .gender-card {
-          background: rgba(255, 255, 255, 0.95);
-          color: #667eea;
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(10px);
+          border: 2px solid rgba(255, 255, 255, 0.2);
+          color: white;
           padding: 30px 50px;
           border-radius: 20px;
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 15px;
+          gap: 12px;
           min-width: 180px;
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           cursor: pointer;
-          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-          border: 3px solid transparent;
+          position: relative;
         }
 
         .gender-card:hover {
-          transform: translateY(-5px) scale(1.05);
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
-          border-color: #667eea;
+          transform: translateY(-5px) scale(1.02);
+          background: rgba(255, 255, 255, 0.15);
+          border-color: #00d9ff;
+          box-shadow: 0 20px 40px rgba(0, 217, 255, 0.2);
         }
 
         .gender-icon {
@@ -439,51 +673,39 @@ export default function Home() {
         }
 
         .gender-card span {
-          font-size: 1.3rem;
-          font-weight: 700;
-        }
-
-        .hero-support {
-          margin-top: 50px;
-          font-size: 1rem;
-          opacity: 0.9;
-        }
-
-        .support-link {
-          color: white;
-          text-decoration: underline;
+          font-size: 1.2rem;
           font-weight: 600;
-          margin-left: 5px;
-          transition: opacity 0.3s;
         }
 
-        .support-link:hover {
-          opacity: 0.8;
+        .card-arrow {
+          position: absolute;
+          right: 20px;
+          top: 50%;
+          transform: translateY(-50%);
+          font-size: 1.2rem;
+          opacity: 0;
+          transition: all 0.3s;
         }
 
-        /* What You Get Section */
-        .what-you-get {
-          padding: 100px 20px;
-          background: #f8f9fa;
+        .gender-card:hover .card-arrow {
+          opacity: 1;
+          right: 15px;
         }
 
+        .hero-trust {
+          margin-top: 40px;
+          font-size: 0.9rem;
+          opacity: 0.7;
+        }
+
+        /* Section Styles */
         .section-header {
           text-align: center;
           margin-bottom: 60px;
         }
 
-        .section-title {
-          font-size: clamp(2rem, 4vw, 3rem);
-          font-weight: 800;
-          color: #1a1a1a;
-          margin-bottom: 15px;
-        }
-
-        .section-subtitle {
-          font-size: 1.2rem;
-          color: #666;
-          max-width: 600px;
-          margin: 0 auto;
+        .section-header.light {
+          color: white;
         }
 
         .section-badge {
@@ -492,104 +714,235 @@ export default function Home() {
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
           color: white;
           border-radius: 50px;
-          font-size: 0.85rem;
-          font-weight: 600;
+          font-size: 0.8rem;
+          font-weight: 700;
           margin-bottom: 15px;
           text-transform: uppercase;
-          letter-spacing: 0.5px;
+          letter-spacing: 1px;
         }
 
-        .features-carousel {
-          position: relative;
-          overflow: hidden;
-          max-width: 800px;
+        .section-badge.light {
+          background: rgba(255,255,255,0.2);
+        }
+
+        .section-title {
+          font-size: clamp(2rem, 4vw, 2.8rem);
+          font-weight: 800;
+          color: #1a1a1a;
+          margin-bottom: 15px;
+        }
+
+        .section-title.light {
+          color: white;
+        }
+
+        .section-subtitle {
+          font-size: 1.1rem;
+          color: #666;
+          max-width: 600px;
           margin: 0 auto;
         }
 
-        .carousel-track {
-          display: flex;
-          transition: transform 0.5s ease-in-out;
+        /* What You Get Section */
+        .what-you-get {
+          padding: 100px 20px;
+          background: #f8f9fa;
         }
 
-        .carousel-slide {
-          min-width: 100%;
-          padding: 20px;
+        .benefits-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 25px;
         }
 
-        .feature-showcase {
+        .benefit-card {
           background: white;
-          padding: 60px 40px;
-          border-radius: 24px;
-          text-align: center;
-          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+          padding: 35px 30px;
+          border-radius: 20px;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+          transition: all 0.3s;
+          border: 2px solid transparent;
         }
 
-        .feature-icon-large {
-          font-size: 4rem;
-          margin-bottom: 30px;
+        .benefit-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+          border-color: #667eea;
         }
 
-        .feature-showcase h3 {
-          font-size: 1.8rem;
+        .benefit-card.highlight {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          grid-row: span 2;
+        }
+
+        .benefit-card.highlight h3 {
+          color: white;
+        }
+
+        .benefit-card.highlight .benefit-list li {
+          color: rgba(255,255,255,0.9);
+        }
+
+        .benefit-icon {
+          font-size: 2.5rem;
+          margin-bottom: 20px;
+        }
+
+        .benefit-card h3 {
+          font-size: 1.3rem;
           font-weight: 700;
           color: #1a1a1a;
           margin-bottom: 20px;
         }
 
-        .feature-showcase p {
-          font-size: 1.1rem;
-          color: #666;
-          line-height: 1.7;
+        .benefit-list {
+          list-style: none;
+          padding: 0;
+          margin: 0;
         }
 
-        .carousel-dots {
-          display: flex;
-          justify-content: center;
-          gap: 12px;
-          margin-top: 30px;
+        .benefit-list li {
+          padding: 8px 0;
+          color: #555;
+          font-size: 0.95rem;
         }
 
-        .dot {
-          width: 12px;
-          height: 12px;
-          border-radius: 50%;
-          background: #ddd;
-          border: none;
-          cursor: pointer;
-          transition: all 0.3s;
-        }
-
-        .dot.active {
-          background: #667eea;
-          width: 32px;
-          border-radius: 6px;
-        }
-
-        /* Testimonials Section */
-        .testimonials {
+        /* How It Works */
+        .how-it-works {
           padding: 100px 20px;
           background: white;
         }
 
+        .steps-grid {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 20px;
+          flex-wrap: wrap;
+        }
+
+        .step-card {
+          background: #f8f9fa;
+          padding: 40px 30px;
+          border-radius: 20px;
+          text-align: center;
+          max-width: 280px;
+          position: relative;
+        }
+
+        .step-number {
+          position: absolute;
+          top: -15px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 35px;
+          height: 35px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 800;
+          font-size: 1rem;
+        }
+
+        .step-icon {
+          font-size: 3rem;
+          margin-bottom: 20px;
+        }
+
+        .step-card h3 {
+          font-size: 1.2rem;
+          font-weight: 700;
+          color: #1a1a1a;
+          margin-bottom: 15px;
+        }
+
+        .step-card p {
+          color: #666;
+          font-size: 0.95rem;
+          line-height: 1.6;
+        }
+
+        .step-arrow {
+          font-size: 2rem;
+          color: #667eea;
+          font-weight: 700;
+        }
+
+        /* Results Section */
+        .results {
+          padding: 100px 20px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          text-align: center;
+        }
+
+        .results-stats {
+          display: flex;
+          justify-content: center;
+          gap: 60px;
+          margin-bottom: 60px;
+          flex-wrap: wrap;
+        }
+
+        .result-stat {
+          color: white;
+        }
+
+        .result-number {
+          font-size: 3rem;
+          font-weight: 800;
+          margin-bottom: 10px;
+        }
+
+        .result-stat p {
+          font-size: 0.95rem;
+          opacity: 0.9;
+          max-width: 150px;
+        }
+
+        .results-quote {
+          color: white;
+          font-size: clamp(1.2rem, 3vw, 1.6rem);
+          font-style: italic;
+          max-width: 800px;
+          margin: 0 auto;
+          line-height: 1.6;
+        }
+
+        .results-quote cite {
+          display: block;
+          margin-top: 20px;
+          font-size: 1rem;
+          font-style: normal;
+          opacity: 0.8;
+        }
+
+        /* Testimonials */
+        .testimonials {
+          padding: 100px 20px;
+          background: #f8f9fa;
+        }
+
         .testimonials-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: 30px;
-          max-width: 1100px;
-          margin: 0 auto;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 25px;
         }
 
         .testimonial-card {
-          background: #f8f9fa;
+          background: white;
           padding: 30px;
           border-radius: 20px;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+          box-shadow: 0 4px 20px rgba(0,0,0,0.05);
           transition: all 0.3s;
         }
 
         .testimonial-card:hover {
           transform: translateY(-5px);
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+          box-shadow: 0 15px 40px rgba(0,0,0,0.1);
         }
 
         .testimonial-header {
@@ -608,72 +961,91 @@ export default function Home() {
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 1.5rem;
+          font-size: 1.3rem;
           font-weight: 700;
         }
 
         .testimonial-info h4 {
-          font-size: 1.1rem;
+          font-size: 1rem;
           font-weight: 700;
           color: #1a1a1a;
           margin-bottom: 5px;
         }
 
         .stars {
-          display: flex;
-          gap: 2px;
-        }
-
-        .star {
-          font-size: 0.9rem;
+          font-size: 0.8rem;
+          letter-spacing: 2px;
         }
 
         .testimonial-text {
           color: #555;
           line-height: 1.6;
           font-size: 0.95rem;
+          margin-bottom: 15px;
         }
 
-        /* Results Section */
-        .results {
-          padding: 100px 20px;
-          background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-          color: white;
+        .testimonial-result {
+          display: inline-block;
+          padding: 5px 15px;
+          background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+          color: #667eea;
+          border-radius: 50px;
+          font-size: 0.85rem;
+          font-weight: 700;
+        }
+
+        /* Guarantee */
+        .guarantee {
+          padding: 80px 20px;
+          background: white;
+        }
+
+        .guarantee-card {
+          background: linear-gradient(135deg, #f0fff4 0%, #e6ffec 100%);
+          border: 2px solid #10b981;
+          border-radius: 25px;
+          padding: 50px;
           text-align: center;
-        }
-
-        .results-content {
-          max-width: 800px;
+          max-width: 700px;
           margin: 0 auto;
         }
 
-        .results-badge {
-          display: inline-block;
+        .guarantee-icon {
+          font-size: 4rem;
+          margin-bottom: 20px;
+        }
+
+        .guarantee-card h2 {
+          font-size: 1.8rem;
+          font-weight: 800;
+          color: #1a1a1a;
+          margin-bottom: 15px;
+        }
+
+        .guarantee-card p {
+          color: #555;
+          font-size: 1.1rem;
+          line-height: 1.6;
+          margin-bottom: 25px;
+        }
+
+        .guarantee-badges {
+          display: flex;
+          justify-content: center;
+          gap: 20px;
+          flex-wrap: wrap;
+        }
+
+        .guarantee-badges span {
+          background: #10b981;
+          color: white;
           padding: 8px 20px;
-          background: rgba(255, 255, 255, 0.2);
-          backdrop-filter: blur(10px);
           border-radius: 50px;
           font-size: 0.9rem;
           font-weight: 600;
-          margin-bottom: 30px;
-          border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        .results-quote {
-          font-size: clamp(1.5rem, 3vw, 2.2rem);
-          font-weight: 700;
-          line-height: 1.4;
-          margin-bottom: 50px;
-          font-style: italic;
-        }
-
-        .results-cta-text {
-          font-size: 1.2rem;
-          margin-top: 30px;
-          opacity: 0.95;
-        }
-
-        /* Pricing Section */
+        /* Pricing */
         .pricing {
           padding: 100px 20px;
           background: #f8f9fa;
@@ -681,8 +1053,8 @@ export default function Home() {
 
         .pricing-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-          gap: 30px;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 25px;
           max-width: 1100px;
           margin: 0 auto;
         }
@@ -690,29 +1062,27 @@ export default function Home() {
         .pricing-card {
           background: white;
           border: 2px solid #e0e0e0;
-          border-radius: 24px;
-          padding: 40px 30px;
+          border-radius: 25px;
+          padding: 35px 25px;
           text-align: center;
-          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: all 0.3s;
           position: relative;
-          animation: scaleIn 0.5s ease-out;
-          animation-fill-mode: both;
         }
 
         .pricing-card:hover {
           border-color: #667eea;
-          box-shadow: 0 20px 60px rgba(102, 126, 234, 0.2);
-          transform: translateY(-10px);
+          box-shadow: 0 15px 40px rgba(102, 126, 234, 0.15);
+          transform: translateY(-5px);
         }
 
         .pricing-card.popular {
           border-color: #667eea;
-          background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+          background: linear-gradient(135deg, rgba(102, 126, 234, 0.03) 0%, rgba(118, 75, 162, 0.03) 100%);
           transform: scale(1.05);
         }
 
         .pricing-card.popular:hover {
-          transform: scale(1.05) translateY(-10px);
+          transform: scale(1.05) translateY(-5px);
         }
 
         .popular-badge {
@@ -722,66 +1092,72 @@ export default function Home() {
           transform: translateX(-50%);
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
           color: white;
-          padding: 6px 20px;
+          padding: 8px 20px;
           border-radius: 50px;
           font-size: 0.85rem;
           font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
+          white-space: nowrap;
         }
 
         .pricing-header h3 {
-          font-size: 1.4rem;
+          font-size: 1.3rem;
           font-weight: 700;
           color: #1a1a1a;
           margin-bottom: 20px;
         }
 
         .price {
-          margin: 25px 0 10px;
+          margin: 20px 0 10px;
         }
 
         .currency {
-          font-size: 1.8rem;
+          font-size: 1.5rem;
           color: #667eea;
           font-weight: 700;
           vertical-align: super;
         }
 
         .amount {
-          font-size: 4rem;
+          font-size: 3.5rem;
           font-weight: 800;
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
-          background-clip: text;
         }
 
         .price-per-day {
           font-size: 0.9rem;
-          color: #999;
-          margin-bottom: 30px;
+          color: #888;
+          margin-bottom: 10px;
+        }
+
+        .discount-badge {
+          display: inline-block;
+          padding: 4px 12px;
+          background: #ff6b6b;
+          color: white;
+          border-radius: 50px;
+          font-size: 0.8rem;
+          font-weight: 700;
+          margin-bottom: 20px;
         }
 
         .pricing-features {
           list-style: none;
           padding: 0;
-          margin: 30px 0;
+          margin: 25px 0;
           text-align: left;
         }
 
         .pricing-features li {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 12px 0;
+          padding: 10px 0;
           color: #555;
-          font-size: 1rem;
+          font-size: 0.95rem;
+          border-bottom: 1px solid #f0f0f0;
         }
 
-        .pricing-features svg {
-          flex-shrink: 0;
-          stroke: #10b981;
+        .pricing-features li:last-child {
+          border-bottom: none;
         }
 
         .pricing-button {
@@ -792,55 +1168,110 @@ export default function Home() {
           color: white;
           border-radius: 50px;
           font-weight: 700;
-          font-size: 1.05rem;
+          font-size: 1rem;
           transition: all 0.3s;
-          margin-top: 20px;
+          margin-top: 15px;
         }
 
         .pricing-button:hover {
-          transform: translateY(-2px);
+          transform: scale(1.02);
           box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .pricing-button.primary {
+          font-size: 1.1rem;
+          padding: 18px;
+        }
+
+        /* FAQ */
+        .faq {
+          padding: 100px 20px;
+          background: white;
+        }
+
+        .faq-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 25px;
+          max-width: 1000px;
+          margin: 0 auto;
+        }
+
+        .faq-item {
+          background: #f8f9fa;
+          padding: 25px 30px;
+          border-radius: 15px;
+          transition: all 0.3s;
+        }
+
+        .faq-item:hover {
+          background: #f0f4ff;
+        }
+
+        .faq-item h4 {
+          font-size: 1.1rem;
+          font-weight: 700;
+          color: #1a1a1a;
+          margin-bottom: 12px;
+        }
+
+        .faq-item p {
+          color: #555;
+          font-size: 0.95rem;
+          line-height: 1.6;
         }
 
         /* Final CTA */
         .final-cta {
           padding: 100px 20px;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          color: white;
+          background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
           text-align: center;
         }
 
+        .cta-content {
+          max-width: 700px;
+          margin: 0 auto;
+        }
+
         .cta-content h2 {
-          font-size: clamp(2rem, 4vw, 3.5rem);
+          font-size: clamp(1.8rem, 4vw, 2.5rem);
           font-weight: 800;
+          color: white;
           margin-bottom: 20px;
         }
 
-        .cta-content p {
-          font-size: 1.3rem;
+        .cta-content > p {
+          color: rgba(255,255,255,0.8);
+          font-size: 1.2rem;
           margin-bottom: 40px;
-          opacity: 0.95;
+        }
+
+        .cta-guarantee {
+          margin-top: 40px;
+          color: #10b981;
+          font-weight: 600;
+          font-size: 1rem;
         }
 
         /* Footer */
         .footer {
-          background: #1a1a1a;
-          color: #fff;
           padding: 60px 20px 30px;
+          background: #0f0f1a;
+          color: white;
         }
 
         .footer-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
           gap: 40px;
           margin-bottom: 40px;
         }
 
         .footer-column h4 {
-          font-size: 1.1rem;
+          font-size: 1rem;
           font-weight: 700;
           margin-bottom: 20px;
-          color: #fff;
+          color: white;
         }
 
         .footer-column ul {
@@ -849,55 +1280,62 @@ export default function Home() {
         }
 
         .footer-column li {
-          margin-bottom: 12px;
+          margin-bottom: 10px;
         }
 
         .footer-column a {
-          color: #aaa;
+          color: rgba(255,255,255,0.7);
+          font-size: 0.9rem;
           transition: color 0.3s;
-          font-size: 0.95rem;
         }
 
         .footer-column a:hover {
-          color: #667eea;
+          color: #00d9ff;
         }
 
         .footer-bottom {
-          border-top: 1px solid #333;
           padding-top: 30px;
+          border-top: 1px solid rgba(255,255,255,0.1);
           text-align: center;
         }
 
         .disclaimer {
-          font-size: 0.85rem;
-          color: #888;
-          margin-bottom: 20px;
-          line-height: 1.6;
-          max-width: 800px;
+          font-size: 0.8rem;
+          color: rgba(255,255,255,0.5);
+          margin-bottom: 15px;
+          max-width: 600px;
           margin-left: auto;
           margin-right: auto;
         }
 
-        .footer-contact {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-          font-size: 0.9rem;
-          color: #aaa;
+        .footer-bottom > p:last-child {
+          color: rgba(255,255,255,0.6);
+          font-size: 0.85rem;
         }
 
-        .footer-contact a {
-          color: #667eea;
-          transition: color 0.3s;
+        /* Animations */
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-30px); }
         }
 
-        .footer-contact a:hover {
-          color: #764ba2;
+        @keyframes floatIcon {
+          0%, 100% { transform: translateY(0) rotate(0deg); }
+          50% { transform: translateY(-20px) rotate(10deg); }
         }
 
+        /* Responsive */
         @media (max-width: 768px) {
           .hero {
             padding: 80px 20px 60px;
+          }
+
+          .hero-stats {
+            gap: 15px;
+          }
+
+          .stat-divider {
+            display: none;
           }
 
           .gender-cards {
@@ -910,8 +1348,16 @@ export default function Home() {
             max-width: 300px;
           }
 
-          .testimonials-grid {
-            grid-template-columns: 1fr;
+          .step-arrow {
+            display: none;
+          }
+
+          .steps-grid {
+            flex-direction: column;
+          }
+
+          .results-stats {
+            gap: 30px;
           }
 
           .pricing-card.popular {
@@ -919,282 +1365,10 @@ export default function Home() {
           }
 
           .pricing-card.popular:hover {
-            transform: translateY(-10px);
-          }
-
-          .footer-grid {
-            grid-template-columns: 1fr;
-            text-align: center;
-          }
-        }
-
-        @keyframes float {
-          0%, 100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-20px);
-          }
-        }
-
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes scaleIn {
-          from {
-            opacity: 0;
-            transform: scale(0.9);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
+            transform: translateY(-5px);
           }
         }
       `}</style>
     </main>
   );
 }
-
-const translations = {
-  "pt-BR": {
-    hero: {
-      title: "Torne-se na melhor versão de si mesmo",
-      subtitle: "Responda ao nosso Questionário para obter um plano de refeições pessoal e atingir as suas metas de peso!",
-      genderLabel: "Selecione o seu gênero",
-      male: "Masculino",
-      female: "Feminino",
-      question: "Tem alguma pergunta?",
-      contactSupport: "Contactar o nosso apoio",
-    },
-    whatYouGet: {
-      title: "O que se obtém com o App",
-      items: [
-        {
-          icon: "📋",
-          title: "Plano de refeições personalizado",
-          description: "Contém ingredientes, preparação passo a passo, receitas extras para trocar e valor nutricional.",
-        },
-        {
-          icon: "🏃",
-          title: "Exercícios para queimar gordura",
-          description: "Fale-nos de si para que possamos criar um plano de refeições personalizado adaptado às suas necessidades, preferências e objetivos.",
-        },
-        {
-          icon: "💬",
-          title: "Apoio profissional",
-          description: "Não hesite em fazer a sua pergunta. Estamos aqui para o ajudar a resolver qualquer tipo de dificuldade 24 horas por dia, 7 dias por semana.",
-        },
-        {
-          icon: "📚",
-          title: "Noções básicas de um estilo de vida saudável",
-          description: "Informe-se sobre como desenvolver um estilo de vida mais saudável. Saiba mais sobre alimentação, sono, stress, etc.",
-        },
-      ],
-    },
-    testimonials: {
-      title: "Comentários",
-      items: [
-        {
-          name: "Katie Barr",
-          review: "Excelente aplicativo! Perdi 8kg em 2 meses seguindo o plano. Muito recomendado!",
-        },
-        {
-          name: "Prettypink Elois",
-          review: "As receitas são deliciosas e fáceis de fazer. Finalmente encontrei algo que funciona!",
-        },
-        {
-          name: "Marcus Hart",
-          review: "O suporte é incrível, sempre prontos para ajudar. Estou muito satisfeito com os resultados.",
-        },
-        {
-          name: "Diane Castillo",
-          review: "Mudou completamente minha relação com a comida. Aprendi a comer de forma saudável e sustentável.",
-        },
-      ],
-    },
-    results: {
-      badge: "Resultado da perda de peso",
-      quote: "O App ensinou-me a perder peso corretamente, então perdi 12kg em 3 meses! Altamente recomendado!",
-      genderLabel: "Selecione o seu gênero",
-      male: "Masculino",
-      female: "Feminino",
-      ctaText: "Comece o Quiz e alcance o seu objectivo de saúde!",
-    },
-    pricing: {
-      badge: "Planos",
-      title: "Escolha seu plano",
-      subtitle: "Receba seu plano completo por email em até 3 horas",
-      days: "dias",
-      perDay: "por dia",
-      popular: "Mais Popular",
-      features: {
-        days: "dias de plano alimentar",
-        recipes: "Receitas detalhadas",
-        shopping: "Lista de compras",
-        macros: "Cálculo de macros",
-        pdf: "PDF profissional",
-      },
-      cta: "Começar Agora",
-    },
-    cta: {
-      title: "Inspire-se com diversão & resultados!",
-      subtitle: "Obtenha o seu plano de refeições pessoal, motivação diária e programa de estudos",
-      genderLabel: "Selecione o seu gênero",
-      male: "Masculino",
-      female: "Feminino",
-    },
-    footer: {
-      product: {
-        title: "Produto",
-        subscription: "A minha assinatura",
-      },
-      terms: {
-        title: "Termos & Políticas",
-        refund: "Política de Reembolso",
-        privacy: "Política de Privacidade",
-        terms: "Termos de Serviço",
-        subscriptionTerms: "Termos da Assinatura",
-        cookies: "Política de Cookies",
-      },
-      company: {
-        title: "Empresa",
-        about: "Sobre nós",
-        contact: "Contate-nos",
-      },
-      disclaimer: "Aviso Legal: Este site destina-se apenas a fins educacionais e de bem-estar geral. As informações fornecidas não substituem aconselhamento ou tratamento médico. Consulte sempre seu médico ou profissional de saúde antes de iniciar qualquer programa de perda de peso.",
-      companyName: "Sua Empresa LTDA",
-    },
-  },
-  en: {
-    hero: {
-      title: "Become the best version of yourself",
-      subtitle: "Answer our Quiz to get a personal meal plan and achieve your weight goals!",
-      genderLabel: "Select your gender",
-      male: "Male",
-      female: "Female",
-      question: "Have a question?",
-      contactSupport: "Contact our support",
-    },
-    whatYouGet: {
-      title: "What you get with the App",
-      items: [
-        {
-          icon: "📋",
-          title: "Personalized meal plan",
-          description: "Contains ingredients, step-by-step preparation, extra recipes to swap, and nutritional value.",
-        },
-        {
-          icon: "🏃",
-          title: "Fat-burning exercises",
-          description: "Tell us about yourself so we can create a personalized meal plan tailored to your needs, preferences, and goals.",
-        },
-        {
-          icon: "💬",
-          title: "Professional support",
-          description: "Don't hesitate to ask your question. We're here to help you solve any kind of difficulty 24/7.",
-        },
-        {
-          icon: "📚",
-          title: "Healthy lifestyle basics",
-          description: "Learn how to develop a healthier lifestyle. Learn more about nutrition, sleep, stress, etc.",
-        },
-      ],
-    },
-    testimonials: {
-      title: "Reviews",
-      items: [
-        {
-          name: "Katie Barr",
-          review: "Excellent app! Lost 18lbs in 2 months following the plan. Highly recommended!",
-        },
-        {
-          name: "Prettypink Elois",
-          review: "The recipes are delicious and easy to make. Finally found something that works!",
-        },
-        {
-          name: "Marcus Hart",
-          review: "The support is amazing, always ready to help. Very satisfied with the results.",
-        },
-        {
-          name: "Diane Castillo",
-          review: "Completely changed my relationship with food. Learned to eat healthy and sustainably.",
-        },
-      ],
-    },
-    results: {
-      badge: "Weight loss result",
-      quote: "The App taught me how to lose weight properly, so I lost 26lbs in 3 months! Highly recommended!",
-      genderLabel: "Select your gender",
-      male: "Male",
-      female: "Female",
-      ctaText: "Start the Quiz and achieve your health goal!",
-    },
-    pricing: {
-      badge: "Plans",
-      title: "Choose your plan",
-      subtitle: "Receive your complete plan via email within 3 hours",
-      days: "days",
-      perDay: "per day",
-      popular: "Most Popular",
-      features: {
-        days: "days meal plan",
-        recipes: "Detailed recipes",
-        shopping: "Shopping list",
-        macros: "Macro calculations",
-        pdf: "Professional PDF",
-      },
-      cta: "Get Started",
-    },
-    cta: {
-      title: "Get inspired with fun & results!",
-      subtitle: "Get your personal meal plan, daily motivation, and study program",
-      genderLabel: "Select your gender",
-      male: "Male",
-      female: "Female",
-    },
-    footer: {
-      product: {
-        title: "Product",
-        subscription: "My subscription",
-      },
-      terms: {
-        title: "Terms & Policies",
-        refund: "Refund Policy",
-        privacy: "Privacy Policy",
-        terms: "Terms of Service",
-        subscriptionTerms: "Subscription Terms",
-        cookies: "Cookie Policy",
-      },
-      company: {
-        title: "Company",
-        about: "About us",
-        contact: "Contact us",
-      },
-      disclaimer: "Disclaimer: This site is intended for educational and general wellness purposes only. The information provided does not replace medical advice or treatment. Always consult your doctor or healthcare professional before starting any weight loss program.",
-      companyName: "Your Company LLC",
-    },
-  },
-};
-
-const pricingPlans = {
-  BRL: [
-    { days: 7, price: 19 },
-    { days: 14, price: 29 },
-    { days: 30, price: 39 },
-    { days: 90, price: 59 },
-  ],
-  USD: [
-    { days: 7, price: 9 },
-    { days: 14, price: 19 },
-    { days: 30, price: 29 },
-    { days: 90, price: 49 },
-  ],
-};

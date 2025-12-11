@@ -1,0 +1,618 @@
+[
+  {
+    "model": "gpt-4o-mini",
+    "duration": 57.986,
+    "tokens": {
+      "input": 236,
+      "output": 3081,
+      "total": 3317
+    },
+    "content": {
+      "days": [
+        {
+          "day": 1,
+          "total_calories": 1800,
+          "meals": [
+            {
+              "time": "07:00",
+              "name": "Café da manhã",
+              "foods": [
+                "Aveia",
+                "Banana",
+                "Iogurte natural"
+              ],
+              "macros": {
+                "calories": 400,
+                "protein": 20,
+                "carbs": 50,
+                "fat": 15
+              }
+            },
+            {
+              "time": "10:00",
+              "name": "Lanche da manhã",
+              "foods": [
+                "Maçã",
+                "Amêndoas"
+              ],
+              "macros": {
+                "calories": 200,
+                "protein": 5,
+                "carbs": 30,
+                "fat": 10
+              }
+            },
+            {
+              "time": "12:30",
+              "name": "Almoço",
+              "foods": [
+                "Frango grelhado",
+                "Arroz integral",
+                "Brócolis"
+              ],
+              "macros": {
+                "calories": 500,
+                "protein": 35,
+                "carbs": 60,
+                "fat": 15
+              }
+            },
+            {
+              "time": "15:30",
+              "name": "Lanche da tarde",
+              "foods": [
+                "Cenoura",
+                "Hummus"
+              ],
+              "macros": {
+                "calories": 150,
+                "protein": 5,
+                "carbs": 20,
+                "fat": 5
+              }
+            },
+            {
+              "time": "19:00",
+              "name": "Jantar",
+              "foods": [
+                "Peixe assado",
+                "Quinoa",
+                "Espinafre"
+              ],
+              "macros": {
+                "calories": 550,
+                "protein": 40,
+                "carbs": 45,
+                "fat": 20
+              }
+            }
+          ]
+        },
+        {
+          "day": 2,
+          "total_calories": 1800,
+          "meals": [
+            {
+              "time": "07:00",
+              "name": "Café da manhã",
+              "foods": [
+                "Pão integral",
+                "Ovo cozido",
+                "Abacate"
+              ],
+              "macros": {
+                "calories": 400,
+                "protein": 20,
+                "carbs": 40,
+                "fat": 20
+              }
+            },
+            {
+              "time": "10:00",
+              "name": "Lanche da manhã",
+              "foods": [
+                "Pera",
+                "Nozes"
+              ],
+              "macros": {
+                "calories": 200,
+                "protein": 5,
+                "carbs": 30,
+                "fat": 10
+              }
+            },
+            {
+              "time": "12:30",
+              "name": "Almoço",
+              "foods": [
+                "Carne magra",
+                "Batata-doce",
+                "Couve-flor"
+              ],
+              "macros": {
+                "calories": 500,
+                "protein": 35,
+                "carbs": 65,
+                "fat": 10
+              }
+            },
+            {
+              "time": "15:30",
+              "name": "Lanche da tarde",
+              "foods": [
+                "Iogurte grego",
+                "Frutas vermelhas"
+              ],
+              "macros": {
+                "calories": 150,
+                "protein": 10,
+                "carbs": 20,
+                "fat": 5
+              }
+            },
+            {
+              "time": "19:00",
+              "name": "Jantar",
+              "foods": [
+                "Tofu grelhado",
+                "Arroz de couve-flor",
+                "Aspargos"
+              ],
+              "macros": {
+                "calories": 550,
+                "protein": 40,
+                "carbs": 35,
+                "fat": 15
+              }
+            }
+          ]
+        },
+        {
+          "day": 3,
+          "total_calories": 1800,
+          "meals": [
+            {
+              "time": "07:00",
+              "name": "Café da manhã",
+              "foods": [
+                "Smoothie de espinafre",
+                "Banana",
+                "Proteína em pó"
+              ],
+              "macros": {
+                "calories": 400,
+                "protein": 30,
+                "carbs": 50,
+                "fat": 10
+              }
+            },
+            {
+              "time": "10:00",
+              "name": "Lanche da manhã",
+              "foods": [
+                "Kiwi",
+                "Sementes de girassol"
+              ],
+              "macros": {
+                "calories": 200,
+                "protein": 6,
+                "carbs": 30,
+                "fat": 10
+              }
+            },
+            {
+              "time": "12:30",
+              "name": "Almoço",
+              "foods": [
+                "Peito de frango",
+                "Ceviche de abacate",
+                "Arroz integral"
+              ],
+              "macros": {
+                "calories": 500,
+                "protein": 40,
+                "carbs": 60,
+                "fat": 10
+              }
+            },
+            {
+              "time": "15:30",
+              "name": "Lanche da tarde",
+              "foods": [
+                "Pepino",
+                "Guacamole"
+              ],
+              "macros": {
+                "calories": 150,
+                "protein": 4,
+                "carbs": 20,
+                "fat": 7
+              }
+            },
+            {
+              "time": "19:00",
+              "name": "Jantar",
+              "foods": [
+                "Salmão grelhado",
+                "Brócolis",
+                "Quinoa"
+              ],
+              "macros": {
+                "calories": 550,
+                "protein": 40,
+                "carbs": 40,
+                "fat": 25
+              }
+            }
+          ]
+        },
+        {
+          "day": 4,
+          "total_calories": 1800,
+          "meals": [
+            {
+              "time": "07:00",
+              "name": "Café da manhã",
+              "foods": [
+                "Panquecas de aveia",
+                "Mel",
+                "Morango"
+              ],
+              "macros": {
+                "calories": 400,
+                "protein": 20,
+                "carbs": 60,
+                "fat": 10
+              }
+            },
+            {
+              "time": "10:00",
+              "name": "Lanche da manhã",
+              "foods": [
+                "Laranja",
+                "Amêndoas"
+              ],
+              "macros": {
+                "calories": 200,
+                "protein": 5,
+                "carbs": 30,
+                "fat": 10
+              }
+            },
+            {
+              "time": "12:30",
+              "name": "Almoço",
+              "foods": [
+                "Filé de peixe",
+                "Arroz integral",
+                "Salada de rúcula"
+              ],
+              "macros": {
+                "calories": 500,
+                "protein": 35,
+                "carbs": 60,
+                "fat": 10
+              }
+            },
+            {
+              "time": "15:30",
+              "name": "Lanche da tarde",
+              "foods": [
+                "Iogurte natural",
+                "Frutas secas"
+              ],
+              "macros": {
+                "calories": 150,
+                "protein": 5,
+                "carbs": 20,
+                "fat": 5
+              }
+            },
+            {
+              "time": "19:00",
+              "name": "Jantar",
+              "foods": [
+                "Carne magra assada",
+                "Legumes grelhados",
+                "Quinoa"
+              ],
+              "macros": {
+                "calories": 550,
+                "protein": 40,
+                "carbs": 40,
+                "fat": 25
+              }
+            }
+          ]
+        },
+        {
+          "day": 5,
+          "total_calories": 1800,
+          "meals": [
+            {
+              "time": "07:00",
+              "name": "Café da manhã",
+              "foods": [
+                "Omelete de claras",
+                "Espinafre",
+                "Pão integral"
+              ],
+              "macros": {
+                "calories": 400,
+                "protein": 30,
+                "carbs": 30,
+                "fat": 15
+              }
+            },
+            {
+              "time": "10:00",
+              "name": "Lanche da manhã",
+              "foods": [
+                "Fruta da estação",
+                "Castanhas"
+              ],
+              "macros": {
+                "calories": 200,
+                "protein": 5,
+                "carbs": 30,
+                "fat": 10
+              }
+            },
+            {
+              "time": "12:30",
+              "name": "Almoço",
+              "foods": [
+                "Peito de frango grelhado",
+                "Batata-doce",
+                "Vagem"
+              ],
+              "macros": {
+                "calories": 500,
+                "protein": 40,
+                "carbs": 60,
+                "fat": 10
+              }
+            },
+            {
+              "time": "15:30",
+              "name": "Lanche da tarde",
+              "foods": [
+                "Cenoura baby",
+                "Hummus"
+              ],
+              "macros": {
+                "calories": 150,
+                "protein": 5,
+                "carbs": 20,
+                "fat": 5
+              }
+            },
+            {
+              "time": "19:00",
+              "name": "Jantar",
+              "foods": [
+                "Tofu grelhado",
+                "Legumes variados",
+                "Arroz integral"
+              ],
+              "macros": {
+                "calories": 550,
+                "protein": 40,
+                "carbs": 45,
+                "fat": 20
+              }
+            }
+          ]
+        },
+        {
+          "day": 6,
+          "total_calories": 1800,
+          "meals": [
+            {
+              "time": "07:00",
+              "name": "Café da manhã",
+              "foods": [
+                "Smoothie de banana",
+                "Espinafre",
+                "Proteína em pó"
+              ],
+              "macros": {
+                "calories": 400,
+                "protein": 30,
+                "carbs": 50,
+                "fat": 10
+              }
+            },
+            {
+              "time": "10:00",
+              "name": "Lanche da manhã",
+              "foods": [
+                "Pera",
+                "Sementes de abóbora"
+              ],
+              "macros": {
+                "calories": 200,
+                "protein": 5,
+                "carbs": 30,
+                "fat": 10
+              }
+            },
+            {
+              "time": "12:30",
+              "name": "Almoço",
+              "foods": [
+                "Frango assado",
+                "Arroz integral",
+                "Brócolis"
+              ],
+              "macros": {
+                "calories": 500,
+                "protein": 40,
+                "carbs": 60,
+                "fat": 10
+              }
+            },
+            {
+              "time": "15:30",
+              "name": "Lanche da tarde",
+              "foods": [
+                "Iogurte grego",
+                "Frutas vermelhas"
+              ],
+              "macros": {
+                "calories": 150,
+                "protein": 10,
+                "carbs": 20,
+                "fat": 5
+              }
+            },
+            {
+              "time": "19:00",
+              "name": "Jantar",
+              "foods": [
+                "Salmão grelhado",
+                "Aspargos",
+                "Quinoa"
+              ],
+              "macros": {
+                "calories": 550,
+                "protein": 40,
+                "carbs": 40,
+                "fat": 25
+              }
+            }
+          ]
+        },
+        {
+          "day": 7,
+          "total_calories": 1800,
+          "meals": [
+            {
+              "time": "07:00",
+              "name": "Café da manhã",
+              "foods": [
+                "Panquecas de aveia",
+                "Mel",
+                "Frutas da estação"
+              ],
+              "macros": {
+                "calories": 400,
+                "protein": 20,
+                "carbs": 60,
+                "fat": 10
+              }
+            },
+            {
+              "time": "10:00",
+              "name": "Lanche da manhã",
+              "foods": [
+                "Maçã",
+                "Nozes"
+              ],
+              "macros": {
+                "calories": 200,
+                "protein": 5,
+                "carbs": 30,
+                "fat": 10
+              }
+            },
+            {
+              "time": "12:30",
+              "name": "Almoço",
+              "foods": [
+                "Carne de porco magra",
+                "Batata-doce",
+                "Cenoura"
+              ],
+              "macros": {
+                "calories": 500,
+                "protein": 35,
+                "carbs": 60,
+                "fat": 10
+              }
+            },
+            {
+              "time": "15:30",
+              "name": "Lanche da tarde",
+              "foods": [
+                "Pepino",
+                "Hummus"
+              ],
+              "macros": {
+                "calories": 150,
+                "protein": 4,
+                "carbs": 20,
+                "fat": 7
+              }
+            },
+            {
+              "time": "19:00",
+              "name": "Jantar",
+              "foods": [
+                "Frango grelhado",
+                "Legumes cozidos",
+                "Quinoa"
+              ],
+              "macros": {
+                "calories": 550,
+                "protein": 40,
+                "carbs": 40,
+                "fat": 25
+              }
+            }
+          ]
+        }
+      ],
+      "shopping_list": [
+        "Aveia",
+        "Banana",
+        "Iogurte natural",
+        "Maçã",
+        "Amêndoas",
+        "Frango grelhado",
+        "Arroz integral",
+        "Brócolis",
+        "Cenoura",
+        "Hummus",
+        "Peixe assado",
+        "Quinoa",
+        "Espinafre",
+        "Pão integral",
+        "Ovo",
+        "Abacate",
+        "Pera",
+        "Nozes",
+        "Carne magra",
+        "Batata-doce",
+        "Couve-flor",
+        "Iogurte grego",
+        "Frutas vermelhas",
+        "Tofu",
+        "Legumes variados",
+        "Smoothie",
+        "Fruta da estação",
+        "Sementes de girassol",
+        "Kiwi",
+        "Sementes de abóbora",
+        "Frutas secas",
+        "Mel",
+        "Morango",
+        "Laranja",
+        "Cenoura baby",
+        "Frutas da estação",
+        "Carne de porco magra"
+      ],
+      "tips": [
+        "Beba bastante água ao longo do dia.",
+        "Evite alimentos processados e açucarados.",
+        "Inclua uma variedade de vegetais em suas refeições.",
+        "Tente preparar suas refeições em casa sempre que possível.",
+        "Controle as porções para evitar excessos."
+      ]
+    }
+  },
+  {
+    "model": "gpt-5-mini",
+    "error": "400 Unsupported value: 'temperature' does not support 0.7 with this model. Only the default (1) value is supported."
+  }
+]

@@ -13,6 +13,8 @@ export default function QuizPage() {
     const [formData, setFormData] = useState({
         name: "",
         email: "",
+        phone: "", // Nome campo
+        countryCode: "+55", // DDI padrão
         age: "",
         weight: "",
         height: "",
@@ -43,8 +45,8 @@ export default function QuizPage() {
 
     const t = translations[locale];
 
-    // Total de etapas (agora 18 com as novas perguntas)
-    const totalSteps = 18;
+    // Total de etapas (agora 19 com a pergunta do WhatsApp)
+    const totalSteps = 19;
 
     // Inicializar teste A/B
     useEffect(() => {
@@ -71,6 +73,7 @@ export default function QuizPage() {
                 targetWeight: formData.targetWeight ? parseFloat(formData.targetWeight) : undefined,
                 mealsPerDay: parseInt(formData.mealsPerDay),
                 locale,
+                customerPhone: `${formData.countryCode}${formData.phone.replace(/\D/g, "")}`,
             };
 
             localStorage.setItem("intake", JSON.stringify(intake));
@@ -124,34 +127,36 @@ export default function QuizPage() {
             case 3:
                 return formData.email.trim() !== "";
             case 4:
-                return true; // Especialista (informativo)
+                return formData.phone.trim().length >= 8; // Basic validation
             case 5:
-                return formData.age !== "" && parseInt(formData.age) >= 10;
+                return true; // Especialista (informativo)
             case 6:
-                return true; // Gender sempre tem um valor padrão
+                return formData.age !== "" && parseInt(formData.age) >= 10;
             case 7:
-                return formData.weight !== "" && parseFloat(formData.weight) > 0;
+                return true; // Gender sempre tem um valor padrão
             case 8:
-                return formData.targetWeight !== "" && parseFloat(formData.targetWeight) > 0;
+                return formData.weight !== "" && parseFloat(formData.weight) > 0;
             case 9:
-                return formData.height !== "" && parseFloat(formData.height) > 0;
+                return formData.targetWeight !== "" && parseFloat(formData.targetWeight) > 0;
             case 10:
-                return formData.goals.length > 0;
+                return formData.height !== "" && parseFloat(formData.height) > 0;
             case 11:
-                return formData.style !== "";
+                return formData.goals.length > 0;
             case 12:
-                return formData.activityLevel !== "";
+                return formData.style !== "";
             case 13:
-                return formData.workoutLocation !== "";
+                return formData.activityLevel !== "";
             case 14:
-                return true; // Lesões são opcionais
+                return formData.workoutLocation !== "";
             case 15:
-                return formData.preferredWorkoutTime !== "";
+                return true; // Lesões são opcionais
             case 16:
-                return true; // Restrições são opcionais
+                return formData.preferredWorkoutTime !== "";
             case 17:
-                return true; // Budget e skill têm valores padrão
+                return true; // Restrições são opcionais
             case 18:
+                return true; // Budget e skill têm valores padrão
+            case 19:
                 return false; // Etapa de loading, não pode avançar
             default:
                 return false;
@@ -230,6 +235,35 @@ export default function QuizPage() {
 
             case 4:
                 return (
+                    <div className="step-content">
+                        <h2>{t.steps.phone.title}</h2>
+                        <p className="step-description">{t.steps.phone.description}</p>
+                        <div className="input-group-phone">
+                            <select
+                                value={formData.countryCode}
+                                onChange={(e) => updateField("countryCode", e.target.value)}
+                                className="input-large ddi-select"
+                            >
+                                <option value="+55">🇧🇷 +55</option>
+                                <option value="+1">🇺🇸 +1</option>
+                                <option value="+351">🇵🇹 +351</option>
+                                <option value="+44">🇬🇧 +44</option>
+                                <option value="+34">🇪🇸 +34</option>
+                            </select>
+                            <input
+                                type="tel"
+                                value={formData.phone}
+                                onChange={(e) => updateField("phone", e.target.value)}
+                                placeholder={t.steps.phone.placeholder}
+                                autoFocus
+                                className="input-large phone-input"
+                            />
+                        </div>
+                    </div>
+                );
+
+            case 5:
+                return (
                     <div className="step-content expert-card">
                         <h2>{t.steps.expert.title}</h2>
                         <p className="step-description">{t.steps.expert.description}</p>
@@ -257,7 +291,7 @@ export default function QuizPage() {
                     </div>
                 );
 
-            case 5:
+            case 6:
                 return (
                     <div className="step-content">
                         <h2>{t.steps.age.title}</h2>
@@ -275,7 +309,7 @@ export default function QuizPage() {
                     </div>
                 );
 
-            case 6:
+            case 7:
                 return (
                     <div className="step-content">
                         <h2>{t.steps.gender.title}</h2>
@@ -309,7 +343,7 @@ export default function QuizPage() {
                     </div>
                 );
 
-            case 7:
+            case 8:
                 return (
                     <div className="step-content">
                         <h2>{t.steps.weight.title}</h2>
@@ -331,7 +365,7 @@ export default function QuizPage() {
                     </div>
                 );
 
-            case 8:
+            case 9:
                 const weightDiff = formData.targetWeight && formData.weight
                     ? Math.abs(parseFloat(formData.targetWeight) - parseFloat(formData.weight))
                     : 0;
@@ -379,7 +413,7 @@ export default function QuizPage() {
                     </div>
                 );
 
-            case 9:
+            case 10:
                 const calculateBMI = () => {
                     if (formData.weight && formData.height) {
                         const heightInMeters = parseFloat(formData.height) / 100;
@@ -464,7 +498,7 @@ export default function QuizPage() {
                     </div>
                 );
 
-            case 10:
+            case 11:
                 return (
                     <div className="step-content">
                         <h2>{t.steps.goals.title}</h2>
@@ -495,7 +529,7 @@ export default function QuizPage() {
                     </div>
                 );
 
-            case 11:
+            case 12:
                 const styleData = formData.abTestVariant === "B" ? t.steps.styleVariantB : t.steps.style;
 
                 return (
@@ -518,7 +552,7 @@ export default function QuizPage() {
                     </div>
                 );
 
-            case 12:
+            case 13:
                 return (
                     <div className="step-content">
                         <h2>{t.steps.activity.title}</h2>
@@ -543,7 +577,7 @@ export default function QuizPage() {
                     </div>
                 );
 
-            case 13:
+            case 14:
                 return (
                     <div className="step-content">
                         <h2>{t.steps.workoutLocation.title}</h2>
@@ -569,7 +603,7 @@ export default function QuizPage() {
                     </div>
                 );
 
-            case 14:
+            case 15:
                 return (
                     <div className="step-content">
                         <h2>{t.steps.injuries.title}</h2>
@@ -604,7 +638,7 @@ export default function QuizPage() {
                     </div>
                 );
 
-            case 15:
+            case 16:
                 return (
                     <div className="step-content">
                         <h2>{t.steps.workoutTime.title}</h2>
@@ -628,7 +662,7 @@ export default function QuizPage() {
                     </div>
                 );
 
-            case 16:
+            case 17:
                 return (
                     <div className="step-content">
                         <h2>{t.steps.restrictions.title}</h2>
@@ -661,7 +695,7 @@ export default function QuizPage() {
                     </div>
                 );
 
-            case 17:
+            case 18:
                 return (
                     <div className="step-content">
                         <h2>{t.steps.final.title}</h2>
@@ -719,7 +753,7 @@ export default function QuizPage() {
                     </div>
                 );
 
-            case 18:
+            case 19:
                 return (
                     <div className="step-content loading-step">
                         <div className="loading-animation">
@@ -761,7 +795,7 @@ export default function QuizPage() {
             <form onSubmit={handleSubmit} className="quiz-form">
                 {renderStep()}
 
-                {currentStep !== 18 && (
+                {currentStep !== 19 && (
                     <div className="button-container">
                         {currentStep > 1 && (
                             <button type="button" onClick={prevStep} className="btn-back">
@@ -769,7 +803,7 @@ export default function QuizPage() {
                             </button>
                         )}
 
-                        {currentStep < 17 ? (
+                        {currentStep < 19 ? (
                             <button
                                 type="button"
                                 onClick={nextStep}
@@ -1278,6 +1312,11 @@ const translations = {
                 title: "Qual é a sua idade?",
                 description: "Isso nos ajuda a calcular suas necessidades nutricionais",
             },
+            phone: {
+                title: "Qual é o seu WhatsApp?",
+                description: "Para envio de atualizações e suporte",
+                placeholder: "11999999999",
+            },
             gender: {
                 title: "Qual é o seu sexo?",
                 description: "Selecione a opção que melhor te representa",
@@ -1515,6 +1554,11 @@ const translations = {
             age: {
                 title: "What's your age?",
                 description: "This helps us calculate your nutritional needs",
+            },
+            phone: {
+                title: "What's your WhatsApp?",
+                description: "For updates and support",
+                placeholder: "1234567890",
             },
             gender: {
                 title: "What's your gender?",

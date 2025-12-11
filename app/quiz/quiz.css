@@ -469,3 +469,39 @@ select.input-large:focus {
         flex-direction: column;
     }
 }
+/* Phone Input Styles */
+.input-group-phone {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    max-width: 500px;
+    justify-content: center;
+    position: relative;
+}
+
+.ddi-select {
+    width: 120px !important;
+    min-width: 120px;
+    padding-left: 20px !important;
+    padding-right: 30px !important;
+    text-align: left !important;
+}
+
+.phone-input {
+    flex: 1;
+}
+
+/* Ensure mobile layout handles phone input well */
+@media (max-width: 480px) {
+    .input-group-phone {
+        gap: 8px;
+    }
+    
+    .ddi-select {
+        width: 100px !important;
+        min-width: 100px;
+        padding-left: 10px !important;
+        padding-right: 20px !important;
+        font-size: 1rem !important;
+    }
+}

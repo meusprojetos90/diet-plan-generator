@@ -1,229 +1,96 @@
-/**
- * Email Service using Resend
- */
-
-import { Resend } from "resend";
+import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export interface SendEmailOptions {
-  to: string;
-  subject: string;
-  locale: "pt-BR" | "en";
-  customerName: string;
-  pdfUrl: string;
-  pdfBuffer: Buffer;
-}
-
-/**
- * Send meal plan PDF via email
- */
-export async function sendEmail(options: SendEmailOptions) {
-  const { to, subject, locale, customerName, pdfUrl, pdfBuffer } = options;
-
-  const htmlContent = getEmailTemplate(locale, customerName, pdfUrl);
+export async function sendWelcomeEmail(email: string, name: string) {
+  if (!process.env.RESEND_API_KEY) {
+    console.warn("RESEND_API_KEY is missing. Skipping email.");
+    return;
+  }
 
   try {
-    const { data, error } = await resend.emails.send({
-      from: process.env.EMAIL_FROM || "Meal Plan <noreply@yourdomain.com>",
-      to: [to],
-      subject,
-      html: htmlContent,
-      attachments: [
-        {
-          filename: `meal-plan-${Date.now()}.pdf`,
-          content: pdfBuffer,
-        },
-      ],
+    await resend.emails.send({
+      from: 'Meu Plano <onboarding@resend.dev>', // Update with verified domain if available
+      to: email,
+      subject: 'Seu Plano Alimentar está pronto! 🥗',
+      html: `
+                <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h1>Olá, ${name}! 👋</h1>
+                    <p>Obrigado por renovar seu plano alimentar!</p>
+                    <p>Seu novo plano já está disponível na sua área do cliente.</p>
+                    
+                    <div style="margin: 30px 0; text-align: center;">
+                        <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard" style="background-color: #667eea; color: white; padding: 15px 30px; text-decoration: none; border-radius: 25px; font-weight: bold; display: inline-block;">
+                            Acessar Minha Área
+                        </a>
+                    </div>
+                    
+                    <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;" />
+                    
+                    <p style="color: #666; font-size: 0.9em;">
+                        Se o botão não funcionar, copie e cole este link no seu navegador:<br/>
+                        ${process.env.NEXT_PUBLIC_APP_URL}/dashboard
+                    </p>
+                </div>
+            `
     });
-
-    if (error) {
-      console.error("Resend error:", error);
-      throw new Error(`Failed to send email: ${error.message}`);
-    }
-
-    console.log("Email sent successfully:", data?.id);
-    return data;
+    console.log(`Welcome email sent to ${email}`);
   } catch (error) {
-    console.error("Email sending error:", error);
-    throw error;
+    console.error("Failed to send welcome email:", error);
   }
 }
 
-/**
- * Get email template based on locale
- */
-function getEmailTemplate(
-  locale: "pt-BR" | "en",
-  customerName: string,
-  pdfUrl: string
-): string {
-  if (locale === "pt-BR") {
-    return `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-      color: #333;
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    .header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 30px;
-      text-align: center;
-      border-radius: 10px;
-      margin-bottom: 30px;
-    }
-    .content {
-      background: #f8f9fa;
-      padding: 30px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-    }
-    .button {
-      display: inline-block;
-      background: #667eea;
-      color: white;
-      padding: 15px 30px;
-      text-decoration: none;
-      border-radius: 5px;
-      margin: 20px 0;
-    }
-    .footer {
-      text-align: center;
-      color: #666;
-      font-size: 14px;
-      margin-top: 30px;
-    }
-  </style>
-</head>
-<body>
-  <div class="header">
-    <h1>🎉 Seu Plano Alimentar está Pronto!</h1>
-  </div>
-  
-  <div class="content">
-    <p>Olá, <strong>${customerName}</strong>!</p>
-    
-    <p>Seu plano alimentar personalizado foi gerado com sucesso! 🥗</p>
-    
-    <p>Preparamos um plano completo e detalhado, especialmente para você, com:</p>
-    <ul>
-      <li>✅ Receitas detalhadas para cada refeição</li>
-      <li>✅ Lista de compras organizada por categoria</li>
-      <li>✅ Cálculo preciso de macros e calorias</li>
-      <li>✅ Dicas de preparo e substituições</li>
-    </ul>
-    
-    <p>O PDF está anexado neste email. Basta baixar o anexo para acessar seu plano completo!</p>
-    
-    <p><strong>Dicas importantes:</strong></p>
-    <ul>
-      <li>Beba pelo menos 2 litros de água por dia</li>
-      <li>Ajuste as porções conforme sua fome e saciedade</li>
-      <li>Consulte um nutricionista para acompanhamento personalizado</li>
-    </ul>
-  </div>
-  
-  <div class="footer">
-    <p>Bom apetite e boa sorte na sua jornada! 💪</p>
-    <p style="font-size: 12px; color: #999;">
-      Este é um email automático. Por favor, não responda.
-    </p>
-  </div>
-</body>
-</html>
-    `;
+export async function sendAccountCreatedEmail(email: string, name: string) {
+  if (!process.env.RESEND_API_KEY) {
+    console.warn("RESEND_API_KEY is missing. Skipping email.");
+    return;
   }
 
-  // English template
-  return `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-      color: #333;
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    .header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 30px;
-      text-align: center;
-      border-radius: 10px;
-      margin-bottom: 30px;
-    }
-    .content {
-      background: #f8f9fa;
-      padding: 30px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-    }
-    .button {
-      display: inline-block;
-      background: #667eea;
-      color: white;
-      padding: 15px 30px;
-      text-decoration: none;
-      border-radius: 5px;
-      margin: 20px 0;
-    }
-    .footer {
-      text-align: center;
-      color: #666;
-      font-size: 14px;
-      margin-top: 30px;
-    }
-  </style>
-</head>
-<body>
-  <div class="header">
-    <h1>🎉 Your Meal Plan is Ready!</h1>
-  </div>
-  
-  <div class="content">
-    <p>Hello, <strong>${customerName}</strong>!</p>
-    
-    <p>Your personalized meal plan has been successfully generated! 🥗</p>
-    
-    <p>We've prepared a complete and detailed plan, especially for you, with:</p>
-    <ul>
-      <li>✅ Detailed recipes for each meal</li>
-      <li>✅ Shopping list organized by category</li>
-      <li>✅ Precise macro and calorie calculations</li>
-      <li>✅ Preparation tips and substitutions</li>
-    </ul>
-    
-    <p>The PDF is attached to this email. Just download the attachment to access your complete plan!</p>
-    
-    <p><strong>Important tips:</strong></p>
-    <ul>
-      <li>Drink at least 2 liters of water per day</li>
-      <li>Adjust portions according to your hunger and satiety</li>
-      <li>Consult a nutritionist for personalized follow-up</li>
-    </ul>
-  </div>
-  
-  <div class="footer">
-    <p>Enjoy your meals and good luck on your journey! 💪</p>
-    <p style="font-size: 12px; color: #999;">
-      This is an automated email. Please do not reply.
-    </p>
-  </div>
-</body>
-</html>
-  `;
+  try {
+    // Link to password reset page with email pre-filled
+    const resetLink = `${process.env.NEXT_PUBLIC_APP_URL}/handler/forgot-password?email=${encodeURIComponent(email)}`;
+
+    await resend.emails.send({
+      from: 'Meu Plano <onboarding@resend.dev>',
+      to: email,
+      subject: '🎉 Sua conta foi criada! Configure sua senha',
+      html: `
+                <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h1>Olá, ${name}! 👋</h1>
+                    <p>Obrigado por adquirir seu plano alimentar personalizado!</p>
+                    <p><strong>Sua conta foi criada automaticamente.</strong> Para acessar sua área do cliente, você precisa criar uma senha:</p>
+                    
+                    <div style="margin: 30px 0; text-align: center;">
+                        <a href="${resetLink}" style="background-color: #10b981; color: white; padding: 15px 30px; text-decoration: none; border-radius: 25px; font-weight: bold; display: inline-block;">
+                            🔐 Criar Minha Senha
+                        </a>
+                    </div>
+
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <p style="margin: 0;"><strong>Seu email de acesso:</strong></p>
+                        <p style="margin: 5px 0 0 0; font-size: 1.1em; color: #667eea;">${email}</p>
+                    </div>
+
+                    <p>Após criar sua senha, você terá acesso a:</p>
+                    <ul>
+                        <li>✅ Seu plano alimentar completo</li>
+                        <li>✅ Treinos personalizados</li>
+                        <li>✅ Calendário interativo</li>
+                        <li>✅ Lista de compras</li>
+                    </ul>
+                    
+                    <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;" />
+                    
+                    <p style="color: #666; font-size: 0.9em;">
+                        Se o botão não funcionar, copie e cole este link no seu navegador:<br/>
+                        ${resetLink}
+                    </p>
+                </div>
+            `
+    });
+    console.log(`Account created email sent to ${email}`);
+  } catch (error) {
+    console.error("Failed to send account created email:", error);
+  }
 }
+
