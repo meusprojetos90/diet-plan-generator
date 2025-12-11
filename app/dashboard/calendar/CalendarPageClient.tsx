@@ -87,9 +87,14 @@ export default function CalendarPageClient() {
             date.setDate(date.getDate() + dayOffset)
             const dateKey = date.toDateString()
 
-            // Find logs for this date
+            // Find logs for this date - l.date may be a Date object from PostgreSQL
             const dateStr = date.toISOString().split('T')[0] // YYYY-MM-DD
-            const log = logs.find((l: any) => l.date === dateStr)
+            const log = logs.find((l: any) => {
+                const logDate = l.date instanceof Date
+                    ? l.date.toISOString().split('T')[0]
+                    : String(l.date).split('T')[0]
+                return logDate === dateStr
+            })
             const completedMeals = log?.meal_ids || []
             const workoutCompleted = log?.workout_completed || false
 

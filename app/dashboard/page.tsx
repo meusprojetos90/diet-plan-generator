@@ -76,9 +76,14 @@ export default async function DashboardPage() {
             }
         }
 
-        // Check today's logs for completion status
+        // Check today's logs for completion status - l.date may be a Date object from PostgreSQL
         const todayStr = today.toISOString().split('T')[0]
-        const log = planData.logs.find((l: any) => l.date === todayStr)
+        const log = planData.logs.find((l: any) => {
+            const logDate = l.date instanceof Date
+                ? l.date.toISOString().split('T')[0]
+                : String(l.date).split('T')[0]
+            return logDate === todayStr
+        })
         if (log) {
             todayLogs = {
                 completedMeals: log.meal_ids || [],
