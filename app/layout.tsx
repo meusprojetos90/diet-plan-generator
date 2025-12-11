@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { StackProvider, StackTheme } from "@stackframe/stack";
 import { stackServerApp } from "@/stack";
+import TrackingScripts from "@/components/TrackingScripts";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,6 +20,7 @@ export default function RootLayout({
     return (
         <html lang="pt-BR">
             <body className={inter.className}>
+                <TrackingScripts />
                 <StackProvider app={stackServerApp} lang="pt-BR">
                     <StackTheme>
                         {children}
@@ -28,3 +30,4 @@ export default function RootLayout({
         </html>
     );
 }
+

@@ -125,6 +125,9 @@ export default async function AdminLayout({
                     <Link href="/admin/leads" style={styles.navItem}>
                         📧 Leads
                     </Link>
+                    <Link href="/admin/settings" style={styles.navItem}>
+                        ⚙️ Configurações
+                    </Link>
                 </nav>
                 <div style={styles.footer}>
                     <Link href="/dashboard" style={styles.backLink}>
